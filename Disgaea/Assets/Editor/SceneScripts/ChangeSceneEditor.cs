@@ -19,6 +19,12 @@ public class ChangeSceneEditor : Editor
         OpenScene("DaneScene");
     }
 
+    [MenuItem("OpenScene/DevScenes/OverWorldScene_N")]
+    public static void OpenOverWorldScene_N()
+    {
+        OpenScene("OverWorldScene_N");
+    }
+
     static void OpenScene(string name)
     {
         if(EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
