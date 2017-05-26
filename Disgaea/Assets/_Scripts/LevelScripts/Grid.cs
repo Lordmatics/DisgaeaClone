@@ -18,11 +18,43 @@ public class Grid : MonoBehaviour
     public static float nodeRadius;
     Node[,] grid;
 
+    [Range(0,1)]
+    public float outlinePercent;
+
     // I can maybe make this dynamic during edit time if you like
     // + Do we want a scene for each level - as in game level
     void Awake()
     {
-        CreateGrid();
+        //CreateGrid();
+    }
+
+    public void GenerateVisualGrid()
+    {
+        //CreateGrid();
+        string mapContainer = "Generated Map";
+        if(transform.FindChild(mapContainer))
+        {
+            DestroyImmediate(transform.FindChild(mapContainer).gameObject);
+        }
+
+        Transform mapHolder = new GameObject(mapContainer).transform;
+        mapHolder.parent = transform;
+
+        // Not sure how to make this work using the property approach for grid size and maxsize etc
+        // You might be able to figure it out.
+        // Editor script works by calling this function every frame, whilst the script is selected in editor
+        // Therefore the string check + Destroy immediate is neccessary to prevent infinite spawning
+        for (int i = 0; i < gridWorldSize.x; i++)
+        {
+            for (int j = 0; j < gridWorldSize.y; j++)
+            {
+                Vector3 tilePosition = new Vector3(-gridWorldSize.x / 2 + 0.5f + i, 0.0f, -gridWorldSize.y / 2 + 0.5f + j);
+                // Quaternion.Euler(Vector3.right * 90) use that if using Quads
+                GameObject newTile = (GameObject)Instantiate(Resources.Load("GridPrefabs/GridNode"),tilePosition,Quaternion.identity);
+                newTile.transform.localScale = Vector3.one * (1 - outlinePercent);
+                newTile.transform.parent = mapHolder;
+            }
+        }
     }
 
     public void CreateGrid()

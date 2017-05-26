@@ -11,12 +11,18 @@ public class GridEditor : Editor
     {
         EditorGUILayout.HelpBox("Grid Script", MessageType.Info);
 
+        EditorGUILayout.HelpBox("Adjust the Vector 2 - The Grid will dynamically resize", MessageType.Info);
+
+        EditorGUILayout.HelpBox("The larger the outline percent the smaller the grid blocks", MessageType.Info);
+
+
+
         base.OnInspectorGUI();
 
-        //Grid grid = target as Grid;
-        //if(grid)
-        //{
-        //    grid.CreateGrid();
-        //}
+        Grid grid = target as Grid;
+        if (grid)
+        {
+            grid.GenerateVisualGrid();
+        }
     }
 }
