@@ -48,4 +48,9 @@ public static class Utility
         }
         return array;
     }
+
+    public static float RoundNumToDP(float num, int decimalPlaces)
+    {
+        return Mathf.Round(num * Mathf.Pow(10, decimalPlaces));
+    }
 }

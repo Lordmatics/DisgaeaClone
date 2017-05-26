@@ -18,12 +18,10 @@ public class TileEditor : Editor
 
         if(DrawDefaultInspector())
         {
-  
-        }
-
-        if (m_Target)
-        {
-            m_Target.ManipulateTile();
+            if (m_Target)
+            {
+                m_Target.ApplyChanges();
+            }
         }
 
         if(GUILayout.Button("Apply Changes"))

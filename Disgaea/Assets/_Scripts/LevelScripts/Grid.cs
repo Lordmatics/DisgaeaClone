@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Grid : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class Grid : MonoBehaviour
     [Range(0,1)]
     public float outlinePercent;
 
+    public List<GameObject> spawnedTiles = new List<GameObject>();
+
     // I can maybe make this dynamic during edit time if you like
     // + Do we want a scene for each level - as in game level
     void Awake()
@@ -34,6 +37,14 @@ public class Grid : MonoBehaviour
         string mapContainer = "Generated Map";
         if(transform.Find(mapContainer))
         {
+            if(spawnedTiles.Count > 0)
+            {
+                for (int i = spawnedTiles.Count - 1; i >= 0; i--)
+                {
+                    GameObject temp = spawnedTiles[i];
+                    spawnedTiles.Remove(temp);
+                }
+            }
             DestroyImmediate(transform.Find(mapContainer).gameObject);
         }
 
@@ -53,6 +64,8 @@ public class Grid : MonoBehaviour
                 GameObject newTile = (GameObject)Instantiate(Resources.Load("GridPrefabs/GridNode"),tilePosition,Quaternion.identity);
                 newTile.transform.localScale = Vector3.one * (1 - outlinePercent);
                 newTile.transform.parent = mapHolder;
+                //Tile script = newTile.GetComponent<Tile>();
+                spawnedTiles.Add(newTile);
             }
         }
     }
