@@ -14,4 +14,9 @@ public static class ExtensionMethods
     {
         scale = new Vector3(scale.x, scale.y + offset, scale.z);
     }
+
+    public static void SetEulerAngleY(this Vector3 eulerAng, float val)
+    {
+        eulerAng = new Vector3(eulerAng.x, eulerAng.y + val, eulerAng.z);
+    }
 }

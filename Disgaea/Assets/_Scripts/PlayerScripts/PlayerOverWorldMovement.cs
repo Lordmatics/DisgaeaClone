@@ -9,6 +9,9 @@ public class PlayerOverWorldMovement : MonoBehaviour
     private CharacterController controller;
 
     [SerializeField]
+    private Transform rotationTransform;
+
+    [SerializeField]
     private float moveSpeed = 0.1f;
 
     private void Start()
@@ -22,7 +25,9 @@ public class PlayerOverWorldMovement : MonoBehaviour
         float moveY = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moveX, 0.0f, moveY) * moveSpeed;
-        controller.Move(movement);
+        if(rotationTransform != null)
+            transform.Translate(movement, rotationTransform);
+        //controller.Move(movement, rotationTransform);
     }
 
 }
