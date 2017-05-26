@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("Scripts/PlayerScripts/PlayerIcon")]
 public class PlayerIcon : MonoBehaviour
 {
 

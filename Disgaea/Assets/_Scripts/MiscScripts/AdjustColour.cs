@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[AddComponentMenu("Scripts/MiscScripts/AdjustColour")]
 public class AdjustColour : MonoBehaviour {
 
     public float timeToChangeColour;

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerIconCube : MonoBehaviour {
+[AddComponentMenu("Scripts/MiscScripts/PlayerIconCube")]
+public class PlayerIconCube : MonoBehaviour
+{
 
     public float heightVariation;
     public float rotationSpeed;

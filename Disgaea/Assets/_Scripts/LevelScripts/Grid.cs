@@ -14,6 +14,7 @@ public class SavedMap
 
 }
 
+[AddComponentMenu("Scripts/LevelScripts/Grid")]
 public class Grid : MonoBehaviour
 {
     public int mapIndex;

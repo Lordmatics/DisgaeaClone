@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class InputManager : MonoBehaviour {
+[AddComponentMenu("Scripts/MiscScripts/InputManager")]
+public class InputManager : MonoBehaviour
+{
 
     public static event Action qPressed;
     public static event Action ePressed;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[AddComponentMenu("Scripts/Camera/Camera_Follow")]
 public class Camera_Follow : MonoBehaviour {
 
     public Transform player;
