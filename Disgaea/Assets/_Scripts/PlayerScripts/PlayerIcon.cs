@@ -13,21 +13,34 @@ public class PlayerIcon : MonoBehaviour
     void WPressed()
     {
         int val = GetDirDifference(0);
+        Vector3 dir = GetDirection(val);
+        MoveIcon(dir);
     }
 
     void SPressed()
     {
         int val = GetDirDifference(1);
+        Vector3 dir = GetDirection(val);
+        MoveIcon(dir);
     }
 
     void APressed()
     {
         int val = GetDirDifference(2);
+        Vector3 dir = GetDirection(val);
+        MoveIcon(dir);
     }
 
     void DPressed()
     {
         int val = GetDirDifference(3);
+        Vector3 dir = GetDirection(val);
+        MoveIcon(dir);
+    }
+
+    void MoveIcon(Vector3 dir)
+    {
+        transform.position += dir;
     }
 
     int GetDirDifference(int dir)

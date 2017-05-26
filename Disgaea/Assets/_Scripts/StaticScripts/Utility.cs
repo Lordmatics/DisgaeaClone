@@ -71,4 +71,28 @@ public static class Utility
             return max;
         return value;
     }
+
+    public static bool Approximately(float x, float y, float validDifference)
+    {
+        if(x <= y + validDifference && 
+           x >= y - validDifference ||
+           y <= x + validDifference &&
+           y >= x - validDifference)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static bool Approximately(float x, float y)
+    {
+        if (x <= y + 0.05f &&
+            x >= y - 0.05f ||
+            y <= x + 0.05f &&
+            y >= x - 0.05f)
+        {
+            return true;
+        }
+        return false;
+    }
 }
