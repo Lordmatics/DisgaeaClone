@@ -12,18 +12,33 @@ public class Camera_Follow : MonoBehaviour {
     public Vector3 trackingDifference;
     Vector3 reference;
     public int rotationState = 0;
+    bool camMovingFromRotation;
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
+        {
             RotateCamera(true);
+            camMovingFromRotation = true;
+        }
         if (Input.GetKeyDown(KeyCode.E))
+        {
             RotateCamera(false);
+            camMovingFromRotation = true;
+        }
     }
 
     void LateUpdate ()
     {
         transform.position = Vector3.SmoothDamp(transform.position, playerIcon.transform.position + trackingDifference, ref reference, moveTime);
+        if(camMovingFromRotation)
+        {
+            LookAtPlayer();
+            if(Mathf.Approximately(transform.position.x, trackingDifference.x))
+            {
+                camMovingFromRotation = false;
+            }
+        }
 	}
 
     public void LookAtPlayer()
@@ -51,7 +66,6 @@ public class Camera_Follow : MonoBehaviour {
         }
         Debug.Log(GetDirectionVector(left) * direction * (Mathf.Abs(defaultPosition.x) * 2));
         Vector3 diff = GetDirectionVector(left) * direction * (Mathf.Abs(defaultPosition.x) * 2);
-        transform.position += diff;
         trackingDifference += diff;
         LookAtPlayer();
     }
@@ -95,5 +109,6 @@ public class Camera_Follow : MonoBehaviour {
         rotationState = 0;
         transform.position = defaultPosition;
         LookAtPlayer();
+        trackingDifference = defaultPosition;
     }
 }

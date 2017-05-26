@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(Camera_Follow))]
+[InitializeOnLoad]
 public class Camera_FollowEditor : Editor {
 
     Camera_Follow m_Target;
     bool direction;
+
+    float m_LastTime;
 
     //Override OnInspectorGUI() to draw your own editor
     public override void OnInspectorGUI()
