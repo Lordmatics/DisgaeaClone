@@ -20,6 +20,7 @@ public class Camera_FollowEditor : Editor {
         DrawDefaultInspector();
         DrawLookAtButton();
         DrawRotateCameraButton();
+        MoveToDefaultPosition();
     }
 
     void DrawLookAtButton()
@@ -38,6 +39,15 @@ public class Camera_FollowEditor : Editor {
         if (GUILayout.Button("Rotate Camera."))
         {
             m_Target.RotateCamera(direction);
+        }
+    }
+
+    void MoveToDefaultPosition()
+    {
+        GUILayout.Space(10);
+        if (GUILayout.Button("Move to Default Position."))
+        {
+            m_Target.MoveToDefaultPos();
         }
     }
 }

@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class MenuConstantsDataAsset
+public class NodeInformationDataAsset
 {
-    /// <summary>
-    /// EXAMPLE of how to create a script that inherits ScriptableObject into an asset.
-    /// /// </summary>
-    /*[MenuItem("Assets/Create/newAsset")] <- Name of asset when in the right click menu.
+    [MenuItem("Assets/Create/ScriptableObjects/NodeInformation")]
     public static void CreateAsset()
     {
-        //ScriptableObjectUtility.CreateAsset<MenuConstants>(); <- "MenuConstants" is the class you want to create an asset of.
-    }*/
-
-
+        ScriptableObjectUtility.CreateAsset<NodeInformation>();
+    }
 }
