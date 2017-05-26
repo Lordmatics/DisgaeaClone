@@ -26,7 +26,7 @@ public class PlayerTriggerCone : MonoBehaviour
 
     void FPressed()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             if(currentTarget != null)
             {
@@ -37,11 +37,11 @@ public class PlayerTriggerCone : MonoBehaviour
 
     private void OnEnable()
     {
-        InputManager.qPressed += FPressed;
+        InputManager.fPressed += FPressed;
     }
 
     private void OnDisable()
     {
-        InputManager.qPressed -= FPressed;
+        InputManager.fPressed -= FPressed;
     }
 }

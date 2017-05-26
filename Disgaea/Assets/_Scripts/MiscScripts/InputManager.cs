@@ -15,6 +15,8 @@ public class InputManager : MonoBehaviour
     public static event Action sPressed;
     public static event Action dPressed;
 
+    public static event Action fPressed;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -35,5 +37,8 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
             if (dPressed != null)
                 dPressed();
+        if (Input.GetKeyDown(KeyCode.F))
+            if (fPressed != null)
+                fPressed();
     }
 }

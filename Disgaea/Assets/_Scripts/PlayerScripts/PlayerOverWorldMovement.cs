@@ -26,8 +26,8 @@ public class PlayerOverWorldMovement : MonoBehaviour
 
         Vector3 movement = new Vector3(moveX, 0.0f, moveY) * moveSpeed;
         if(rotationTransform != null)
-            transform.Translate(movement, rotationTransform);
-        //controller.Move(movement, rotationTransform);
+            //transform.Translate(movement, rotationTransform);
+        controller.Move(transform.forward * moveSpeed);
     }
 
 }
