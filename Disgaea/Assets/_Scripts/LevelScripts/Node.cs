@@ -2,17 +2,18 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Node {
-
-    public int gridX;
-    public int gridY;
+public class Node
+{
+    public Coord gridCoOrd;
+    //public int gridX;
+    //public int gridY;
     public int tileHeight;
     public int moveDist;
-    public Vector2 worldCoOrdinates
+    public Coord worldCoOrdinates
     {
         get
         {
-            return new Vector2(gridX, gridY);
+            return new Coord(gridCoOrd.x, gridCoOrd.z);
         }
     }
 
@@ -25,10 +26,9 @@ public class Node {
     public Image combatTile;
     //public Character character;
 
-    public Node(int x, int z, Vector3 worldPos, bool walkable, int _tileHeight, Image _geoTile, Image _combatTile)
+    public Node(Coord coOrd, Vector3 worldPos, bool walkable, int _tileHeight, Image _geoTile, Image _combatTile)
     {
-        gridX = x;
-        gridY = z;
+        gridCoOrd = coOrd;
         worldPosition = worldPos;
         isWalkable = walkable;
         geoTile = _geoTile;
@@ -36,10 +36,9 @@ public class Node {
         tileHeight = _tileHeight;
     }
 
-    public Node(int x, int z, Vector3 worldPos, bool walkable)
+    public Node(Coord coOrd, Vector3 worldPos, bool walkable)
     {
-        gridX = x;
-        gridY = z;
+        gridCoOrd = coOrd;
         worldPosition = worldPos;
         isWalkable = walkable;
     }

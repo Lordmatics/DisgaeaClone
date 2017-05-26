@@ -12,5 +12,11 @@ public class GridEditor : Editor
         EditorGUILayout.HelpBox("Grid Script", MessageType.Info);
 
         base.OnInspectorGUI();
+
+        //Grid grid = target as Grid;
+        //if(grid)
+        //{
+        //    grid.CreateGrid();
+        //}
     }
 }

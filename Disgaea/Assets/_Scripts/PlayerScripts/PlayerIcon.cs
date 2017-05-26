@@ -5,14 +5,13 @@ using System.Collections.Generic;
 
 public class PlayerIcon : MonoBehaviour
 {
-
     public Text UICoOrds;
     public Text UIHeight;
     public Text UIMoveDist;
     public int jump;
     public int move;
 
-    Vector2 worldCoOrdinates;
+    Coord worldCoOrdinates;
     int currentHeight;
     Grid grid;
 
@@ -47,7 +46,7 @@ public class PlayerIcon : MonoBehaviour
     void SetUI()
     {
         currentHeight = grid.GetNodeFromWorldCoOrdinate(worldCoOrdinates).tileHeight;
-        UICoOrds.text = "Co-Ords: (" + (worldCoOrdinates.x + 1) + " , " + (worldCoOrdinates.y + 1) + ")";
+        UICoOrds.text = "Co-Ords: (" + (worldCoOrdinates.x + 1) + " , " + (worldCoOrdinates.z + 1) + ")";
         UIHeight.text = "Height: " + currentHeight;
         Node node = grid.GetNodeFromWorldCoOrdinate(worldCoOrdinates);
         UIMoveDist.text = "MoveDist: " + node.moveDist;
@@ -177,21 +176,30 @@ public class PlayerIcon : MonoBehaviour
             _rotation -= 4;
         switch(_rotation)
         {
+            // Might overload += and -= for Coord
             case 0:
                 transform.position += Vector3.forward;
-                worldCoOrdinates += Vector2.up;
+                worldCoOrdinates += Coord.Up();
+                //worldCoOrdinates.z += 1;
+                //worldCoOrdinates += Vector2.up;
                 break;
             case 1:
                 transform.position += Vector3.right;
-                worldCoOrdinates += Vector2.right;
+                worldCoOrdinates += Coord.Right();
+                //worldCoOrdinates.x += 1;
+                //worldCoOrdinates += Vector2.right;
                 break;
             case 2:
                 transform.position += Vector3.back;
-                worldCoOrdinates += Vector2.down;
+                worldCoOrdinates += Coord.Down();
+                //worldCoOrdinates.z -= 1;
+                //worldCoOrdinates += Vector2.down;
                 break;
             case 3:
                 transform.position += Vector3.left;
-                worldCoOrdinates += Vector2.left;
+                worldCoOrdinates += Coord.Left();
+                //worldCoOrdinates.x -= 1;
+                //worldCoOrdinates += Vector2.left;
                 break;
         }
         SetUI();
@@ -237,12 +245,12 @@ public class PlayerIcon : MonoBehaviour
         Node currentNode = grid.GetNodeFromWorldCoOrdinate(worldCoOrdinates);
         int maxNodes = GetTotalMovementTiles(move); // calculates total tile count for current move distance.
         int tilesPerQuadrant = 1; // this is for a loop that checks a quadrant.
-        Vector2 algorithmWorldCoords; // a temporary set of Vector2 coOrdinates so that the world coOdrinates don't change.
+        Coord algorithmWorldCoords; // a temporary set of Vector2 coOrdinates so that the world coOdrinates don't change.
         int counter = 1;
         SetUpCurrentNode(grid.GetNodeFromWorldCoOrdinate(worldCoOrdinates));
         while (counter <= move) // while loop loops through each segment till it has worked up to move amount of tiles.
         {
-            algorithmWorldCoords = worldCoOrdinates + ((Vector2.up) * counter); // adjust the starting point of the node checks.
+            algorithmWorldCoords = worldCoOrdinates + new Coord(0, counter);// ((Vector2.up) * counter); // adjust the starting point of the node checks.
             for (int i = 0; i < 4; i++) // 4 represents quadrants.
             {
                 for (int j = 0; j < tilesPerQuadrant; j++)
@@ -328,20 +336,20 @@ public class PlayerIcon : MonoBehaviour
             FindLeftoverTiles(nodesNotInRadius, false);//Final Check just to find any spaces left with gaps because of high walls etc.
     }
 
-    Vector2 ChangeDirection(int index)
+    Coord ChangeDirection(int index)
     {
         switch(index)
         {
             case 0:
-                return Vector2.up;
+                return Coord.Up();
             case 1:
-                return Vector2.right;
+                return Coord.Right();
             case 2:
-                return Vector2.down;
+                return Coord.Down();
             case 3:
-                return Vector2.left;
+                return Coord.Left();
         }
-        return Vector2.zero;
+        return Coord.Zero();
     }
 
     void SetUpCurrentNode(Node currentNode)
@@ -528,47 +536,47 @@ public class PlayerIcon : MonoBehaviour
         //print("Stuff just happened");
     }*/
 
-    Vector2 NewDirection(Vector2 dir, int index)
+    Coord NewDirection(Coord dir, int index)
     {
         //print("DirectionIndexer: " + index);
         switch (index)
         {
             case 0:
-                return dir + new Vector2(1, -1);
+                return dir + Coord.SE();
             case 1:
-                return dir + new Vector2(-1, -1);
+                return dir + Coord.SW();
             case 2:
-                return dir + new Vector2(-1, 1);
+                return dir + Coord.NW();
             case 3:
-                return dir + new Vector2(1, 1);
+                return dir + Coord.NE();
             default:
                 return dir;
         }
     }
 
-    Node GetSideNode(Vector2 currNodePos, int index)
+    Node GetSideNode(Coord currNodePos, int index)
     {
         Node node;
-        Vector2 pos;
+        Coord pos;
         //print("Current Node Pos???: " + currNodePos);
         //print(currNodePos + new Vector2(0, -1));
         switch (index)
         {
             case 0:
-                pos = currNodePos + new Vector2(0, -1);
+                pos = currNodePos + Coord.Down();// new Vector2(0, -1);
                 node = grid.GetNodeFromWorldCoOrdinate(pos);
                 //print("results: " + node.worldCoOrdinates);
                 return node;
             case 1:
-                pos = currNodePos + new Vector2(-1, 0);
+                pos = currNodePos + Coord.Left();// new Vector2(-1, 0);
                 node = grid.GetNodeFromWorldCoOrdinate(pos);
                 return node;
             case 2:
-                pos = currNodePos + new Vector2(0, 1);
+                pos = currNodePos + Coord.Right();// new Vector2(0, 1);
                 node = grid.GetNodeFromWorldCoOrdinate(pos);
                 return node;
             case 3:
-                pos = currNodePos + new Vector2(1, 0);
+                pos = currNodePos + Coord.Up();// new Vector2(1, 0);
                 node = grid.GetNodeFromWorldCoOrdinate(pos);
                 return node;
             default:
@@ -576,34 +584,34 @@ public class PlayerIcon : MonoBehaviour
         }
     }
 
-    List<Node> GetSideNodes(Vector2 currNodePos, int index)
+    List<Node> GetSideNodes(Coord currNodePos, int index)
     {
         List<Node> nodes = new List<Node>();
-        Vector2 pos;
+        Coord pos;
         switch (index)
         {
             case 0:
-                pos = currNodePos + new Vector2(0, -1);
+                pos = currNodePos + Coord.Down();// new Vector2(0, -1);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
-                pos = currNodePos + new Vector2(-1, 0);
+                pos = currNodePos + Coord.Left();// new Vector2(-1, 0);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
                 break;
             case 1:
-                pos = currNodePos + new Vector2(-1, 0);
+                pos = currNodePos + Coord.Left();// new Vector2(-1, 0);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
-                pos = currNodePos + new Vector2(0, 1);
+                pos = currNodePos + Coord.Up();// new Vector2(0, 1);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
                 break;
             case 2:
-                pos = currNodePos + new Vector2(0, 1);
+                pos = currNodePos + Coord.Up();// new Vector2(0, 1);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
                 pos = currNodePos + new Vector2(1, 0);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
                 break;
             case 3:
-                pos = currNodePos + new Vector2(1, 0);
+                pos = currNodePos + Coord.Right();// new Vector2(1, 0);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
-                pos = currNodePos + new Vector2(0, -1);
+                pos = currNodePos + Coord.Down();// new Vector2(0, -1);
                 nodes.Add(grid.GetNodeFromWorldCoOrdinate(pos));
                 break;
             default:
