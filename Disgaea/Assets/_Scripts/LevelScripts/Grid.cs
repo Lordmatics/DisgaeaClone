@@ -2,11 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
+public class SavedMap
+{
+    public Vector2 gridWorldSize;
+    public LayerMask floorLayermask;
+    [Range(0, 1)]
+    public float outlinePercent;
+}
+
 public class Grid : MonoBehaviour
 {
 
-    public LayerMask floorLayermask;
-    public Vector2 gridWorldSize;
+    //public LayerMask floorLayermask;
+    //public Vector2 gridWorldSize;
+
+    // Danes grid int
     int gridSizeX, gridSizeY;
     public int MaxSize
     {
@@ -19,10 +30,14 @@ public class Grid : MonoBehaviour
     public static float nodeRadius;
     Node[,] grid;
 
-    [Range(0,1)]
-    public float outlinePercent;
+    //[Range(0,1)]
+    //public float outlinePercent;
 
     public List<GameObject> spawnedTiles = new List<GameObject>();
+
+    SavedMap currentMap;
+    public SavedMap[] maps;
+    public int mapIndex;
 
     // I can maybe make this dynamic during edit time if you like
     // + Do we want a scene for each level - as in game level
@@ -33,6 +48,8 @@ public class Grid : MonoBehaviour
 
     public void GenerateVisualGrid()
     {
+        currentMap = maps[mapIndex];
+
         //CreateGrid();
         string mapContainer = "Generated Map";
         if(transform.Find(mapContainer))
@@ -55,14 +72,14 @@ public class Grid : MonoBehaviour
         // You might be able to figure it out.
         // Editor script works by calling this function every frame, whilst the script is selected in editor
         // Therefore the string check + Destroy immediate is neccessary to prevent infinite spawning
-        for (int i = 0; i < gridWorldSize.x; i++)
+        for (int i = 0; i < currentMap.gridWorldSize.x; i++)
         {
-            for (int j = 0; j < gridWorldSize.y; j++)
+            for (int j = 0; j < currentMap.gridWorldSize.y; j++)
             {
-                Vector3 tilePosition = new Vector3(-gridWorldSize.x / 2 + 0.5f + i, 0.0f, -gridWorldSize.y / 2 + 0.5f + j);
+                Vector3 tilePosition = new Vector3(-currentMap.gridWorldSize.x / 2 + 0.5f + i, 0.0f, -currentMap.gridWorldSize.y / 2 + 0.5f + j);
                 // Quaternion.Euler(Vector3.right * 90) use that if using Quads
                 GameObject newTile = (GameObject)Instantiate(Resources.Load("GridPrefabs/GridNode"),tilePosition,Quaternion.identity);
-                newTile.transform.localScale = Vector3.one * (1 - outlinePercent);
+                newTile.transform.localScale = Vector3.one * (1 - currentMap.outlinePercent);
                 newTile.transform.parent = mapHolder;
                 //Tile script = newTile.GetComponent<Tile>();
                 spawnedTiles.Add(newTile);
@@ -74,9 +91,9 @@ public class Grid : MonoBehaviour
     {
         //Debug.Log("Grid");
         float nodeDiameter = nodeRadius * 2;
-        Vector3 worldBottomLeft = transform.position - (Vector3.right * gridWorldSize.x / 2) - (Vector3.forward * gridWorldSize.y / 2);
-        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
-        gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+        Vector3 worldBottomLeft = transform.position - (Vector3.right * currentMap.gridWorldSize.x / 2) - (Vector3.forward * currentMap.gridWorldSize.y / 2);
+        gridSizeX = Mathf.RoundToInt(currentMap.gridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(currentMap.gridWorldSize.y / nodeDiameter);
         grid = new Node[gridSizeX, gridSizeY];
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -84,7 +101,7 @@ public class Grid : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 //Transform tile = ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, floorLayermask);
-                Transform tile = Utility.ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, floorLayermask);
+                Transform tile = Utility.ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, currentMap.floorLayermask);
                 if (tile != null)
                 {
                     Transform canvas = tile.parent.Find("Canvas");
@@ -104,37 +121,6 @@ public class Grid : MonoBehaviour
         int height = (int)((0.1f + tileY) * 10); // the extra 0.1 is to make it so that 0 world height = 1 height. {(0.1 + 0) * 10 = 1};
         return height;
     }
-
-    // Can clean this class, by moving multi purpose logic into helper class
-    //public Transform ShootRaycastTransform(Vector3 origin, Vector3 direction, int rayLength, LayerMask layermask) // all purpose single raycast method that either returns null or returns the hit object;
-    //{
-    //    RaycastHit hit;
-    //    Physics.Raycast(origin, direction, out hit, rayLength, layermask);
-    //    Debug.DrawRay(origin, direction * rayLength, Color.red, 5);
-    //    if(hit.transform != null)
-    //    {
-    //        return hit.transform;
-    //    }
-    //    else
-    //    {
-    //        return null;
-    //    }
-    //}
-
-    //public Vector3 ShootRaycastVector(Vector3 origin, Vector3 direction, int rayLength, LayerMask layermask) // all purpose single raycast method that either returns a Vector3.zero or returns the hit point world space vector;
-    //{
-    //    RaycastHit hit;
-    //    Physics.Raycast(origin, direction, out hit, rayLength, layermask);
-    //    Debug.DrawRay(origin, direction * rayLength, Color.red, 5);
-    //    if (hit.transform != null)
-    //    {
-    //        return hit.point;
-    //    }
-    //    else
-    //    {
-    //        return Vector3.zero;
-    //    }
-    //}
 
     public Node GetNodeFromWorldCoOrdinate(Coord coOrdinate)
     {
