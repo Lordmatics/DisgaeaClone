@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
         movement = GetComponent<PlayerOverWorldMovement>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if(movement)
         {
