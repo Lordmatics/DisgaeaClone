@@ -9,4 +9,9 @@ public static class ExtensionMethods
     {
         Debug.Log("Example Function was Ran from: " + gamObj.name);
     }
+
+    public static void SetScaleY(this Vector3 scale, float offset)
+    {
+        scale = new Vector3(scale.x, scale.y + offset, scale.z);
+    }
 }

@@ -15,14 +15,25 @@ public class GridEditor : Editor
 
         EditorGUILayout.HelpBox("The larger the outline percent the smaller the grid blocks", MessageType.Info);
 
-
-
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
 
         Grid grid = target as Grid;
-        if (grid)
+
+        if (DrawDefaultInspector())
         {
-            grid.GenerateVisualGrid();
+            if (grid)
+            {
+                grid.GenerateVisualGrid();
+            }
         }
+
+        if(GUILayout.Button("ForceChange"))
+        {
+            if (grid)
+            {
+                grid.GenerateVisualGrid();
+            }
+        }
+
     }
 }
