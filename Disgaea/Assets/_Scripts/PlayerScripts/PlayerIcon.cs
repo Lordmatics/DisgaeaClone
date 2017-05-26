@@ -6,6 +6,57 @@ using System.Collections.Generic;
 public class PlayerIcon : MonoBehaviour
 {
 
+    int currentRotationValue;
+
+    void WPressed()
+    {
+
+    }
+
+    void SPressed()
+    {
+
+    }
+
+    void APressed()
+    {
+
+    }
+
+    void DPressed()
+    {
+
+    }
+
+    void QPressed()
+    {
+        currentRotationValue = Utility.ClampCycleInt(--currentRotationValue, 0, 3);
+    }
+
+    void EPressed()
+    {
+        currentRotationValue = Utility.ClampCycleInt(++currentRotationValue, 0, 3);
+    }
+
+    private void OnEnable()
+    {
+        InputManager.wPressed += WPressed;
+        InputManager.sPressed += SPressed;
+        InputManager.aPressed += APressed;
+        InputManager.dPressed += DPressed;
+        InputManager.qPressed += QPressed;
+        InputManager.ePressed += EPressed;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.wPressed -= WPressed;
+        InputManager.sPressed -= SPressed;
+        InputManager.aPressed -= APressed;
+        InputManager.dPressed -= DPressed;
+        InputManager.qPressed -= QPressed;
+        InputManager.ePressed -= EPressed;
+    }
 
 
 
@@ -157,80 +208,80 @@ public class PlayerIcon : MonoBehaviour
             return _rotation;
     }*/
 
-   /* void FixedUpdate()
-    {
-        JoystickMoveIcon();
-    }
+    /* void FixedUpdate()
+     {
+         JoystickMoveIcon();
+     }
 
-    Coroutine up;
-    Coroutine right;
-    Coroutine down;
-    Coroutine left;
+     Coroutine up;
+     Coroutine right;
+     Coroutine down;
+     Coroutine left;
 
-    void JoystickMoveIcon()
-    {
-        if (Input.GetAxis("Vertical") > 0)
-        {
-            if(up == null)
-                up = StartCoroutine(MoveIconIE(rotation, Input.GetAxis("Vertical")));
-        }
-        if (Input.GetAxis("Horizontal") > 0)
-        {
-            if(right == null)
-                right = StartCoroutine(MoveIconIE(rotation + 1, Input.GetAxis("Vertical")));
-        }
-        if (Input.GetAxis("Vertical") < 0)
-        {
-            if(down == null)
-                down = StartCoroutine(MoveIconIE(rotation + 2, Input.GetAxis("Vertical")));
-        }
-        if (Input.GetAxis("Horizontal") < 0)
-        {
-            if(left == null)
-                left = StartCoroutine(MoveIconIE(rotation + 3, Input.GetAxis("Vertical")));
-        }
-    }
+     void JoystickMoveIcon()
+     {
+         if (Input.GetAxis("Vertical") > 0)
+         {
+             if(up == null)
+                 up = StartCoroutine(MoveIconIE(rotation, Input.GetAxis("Vertical")));
+         }
+         if (Input.GetAxis("Horizontal") > 0)
+         {
+             if(right == null)
+                 right = StartCoroutine(MoveIconIE(rotation + 1, Input.GetAxis("Vertical")));
+         }
+         if (Input.GetAxis("Vertical") < 0)
+         {
+             if(down == null)
+                 down = StartCoroutine(MoveIconIE(rotation + 2, Input.GetAxis("Vertical")));
+         }
+         if (Input.GetAxis("Horizontal") < 0)
+         {
+             if(left == null)
+                 left = StartCoroutine(MoveIconIE(rotation + 3, Input.GetAxis("Vertical")));
+         }
+     }
 
-    IEnumerator MoveIconIE(int _rotation, float axis)
-    {
-        while(axis != 0)
-        {
-            if (_rotation > 3)
-                _rotation -= 4;
-            switch (_rotation)
-            {
-                case 0:
-                    transform.position += Vector3.forward;
-                    worldCoOrdinates += Vector2.up;
-                    break;
-                case 1:
-                    transform.position += Vector3.right;
-                    worldCoOrdinates += Vector2.right;
-                    break;
-                case 2:
-                    transform.position += Vector3.back;
-                    worldCoOrdinates += Vector2.down;
-                    break;
-                case 3:
-                    transform.position += Vector3.left;
-                    worldCoOrdinates += Vector2.left;
-                    break;
-            }
-            SetUI();
-            transform.position = new Vector3(transform.position.x, ((float)currentHeight / 10) - 0.1f, transform.position.z);
-            yield return new WaitForSeconds(0.5f);
-        }
-        if(Input.GetAxis("Horizontal") == 0)
-        {
-            right = null;
-            left = null;
-        }
-        if (Input.GetAxis("Vertical") == 0)
-        {
-            up = null;
-            down = null;
-        }
-    }*/
+     IEnumerator MoveIconIE(int _rotation, float axis)
+     {
+         while(axis != 0)
+         {
+             if (_rotation > 3)
+                 _rotation -= 4;
+             switch (_rotation)
+             {
+                 case 0:
+                     transform.position += Vector3.forward;
+                     worldCoOrdinates += Vector2.up;
+                     break;
+                 case 1:
+                     transform.position += Vector3.right;
+                     worldCoOrdinates += Vector2.right;
+                     break;
+                 case 2:
+                     transform.position += Vector3.back;
+                     worldCoOrdinates += Vector2.down;
+                     break;
+                 case 3:
+                     transform.position += Vector3.left;
+                     worldCoOrdinates += Vector2.left;
+                     break;
+             }
+             SetUI();
+             transform.position = new Vector3(transform.position.x, ((float)currentHeight / 10) - 0.1f, transform.position.z);
+             yield return new WaitForSeconds(0.5f);
+         }
+         if(Input.GetAxis("Horizontal") == 0)
+         {
+             right = null;
+             left = null;
+         }
+         if (Input.GetAxis("Vertical") == 0)
+         {
+             up = null;
+             down = null;
+         }
+     }*/
 
     /*void MoveInput()
     {

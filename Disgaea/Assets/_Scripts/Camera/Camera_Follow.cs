@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Camera_Follow : MonoBehaviour {
 
-    public PlayerIcon playerIcon;
+    public Transform player;
     public float moveTime;
 
     Vector3 defaultPosition = new Vector3(-5, 12, -5);
@@ -14,23 +14,9 @@ public class Camera_Follow : MonoBehaviour {
     public int rotationState = 0;
     bool camMovingFromRotation;
 
-    private void Update()
+    void FixedUpdate ()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            RotateCamera(true);
-            camMovingFromRotation = true;
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            RotateCamera(false);
-            camMovingFromRotation = true;
-        }
-    }
-
-    void LateUpdate ()
-    {
-        transform.position = Vector3.SmoothDamp(transform.position, playerIcon.transform.position + trackingDifference, ref reference, moveTime);
+        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + trackingDifference, ref reference, moveTime);
         if(camMovingFromRotation)
         {
             LookAtPlayer();
@@ -43,7 +29,7 @@ public class Camera_Follow : MonoBehaviour {
 
     public void LookAtPlayer()
     {
-        transform.LookAt(playerIcon.transform);
+        transform.LookAt(player.transform);
     }
 
     public void RotateCamera(bool left)
@@ -55,14 +41,14 @@ public class Camera_Follow : MonoBehaviour {
             direction = -1f;
             if (rotationState == 0 || rotationState == 3)
                 direction *= -1f;
-            rotationState = ChangeRotationState(--rotationState);
+            rotationState = Utility.ClampCycleInt(--rotationState, 0, 3); // ChangeRotationState(--rotationState);
         }
         else
         {
             direction = 1f;
             if (rotationState == 2 || rotationState == 3)
                 direction *= -1f;
-            rotationState = ChangeRotationState(++rotationState);
+            rotationState = Utility.ClampCycleInt(++rotationState, 0, 3); // ChangeRotationState(++rotationState);
         }
         Debug.Log(GetDirectionVector(left) * direction * (Mathf.Abs(defaultPosition.x) * 2));
         Vector3 diff = GetDirectionVector(left) * direction * (Mathf.Abs(defaultPosition.x) * 2);
@@ -110,5 +96,35 @@ public class Camera_Follow : MonoBehaviour {
         transform.position = defaultPosition;
         LookAtPlayer();
         trackingDifference = defaultPosition;
+    }
+
+    void QPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            RotateCamera(true);
+            camMovingFromRotation = true;
+        }
+    }
+
+    void EPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            RotateCamera(false);
+            camMovingFromRotation = true;
+        }
+    }
+
+    private void OnEnable()
+    {
+        InputManager.qPressed += QPressed;
+        InputManager.ePressed += EPressed;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.qPressed -= QPressed;
+        InputManager.ePressed -= EPressed;
     }
 }

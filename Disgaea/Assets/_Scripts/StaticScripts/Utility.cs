@@ -53,4 +53,22 @@ public static class Utility
     {
         return Mathf.Round(num * Mathf.Pow(10, decimalPlaces));
     }
+
+    public static int ClampCycleInt(int value, int min, int max)
+    {
+        if (value > max)
+            return min;
+        else if (value < min)
+            return max;
+        return value;
+    }
+
+    public static float ClampCycleFloat(float value, float min, float max)
+    {
+        if (value > max)
+            return min;
+        else if (value < min)
+            return max;
+        return value;
+    }
 }
