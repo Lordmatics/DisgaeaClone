@@ -9,10 +9,14 @@ public class SavedMap
     public LayerMask floorLayermask;
     [Range(0, 1)]
     public float outlinePercent;
+
+    public List<GameObject> spawnedTiles = new List<GameObject>();
+
 }
 
 public class Grid : MonoBehaviour
 {
+    public int mapIndex;
 
     //public LayerMask floorLayermask;
     //public Vector2 gridWorldSize;
@@ -33,11 +37,8 @@ public class Grid : MonoBehaviour
     //[Range(0,1)]
     //public float outlinePercent;
 
-    public List<GameObject> spawnedTiles = new List<GameObject>();
-
     SavedMap currentMap;
     public SavedMap[] maps;
-    public int mapIndex;
 
     // I can maybe make this dynamic during edit time if you like
     // + Do we want a scene for each level - as in game level
@@ -54,12 +55,12 @@ public class Grid : MonoBehaviour
         string mapContainer = "Generated Map";
         if(transform.Find(mapContainer))
         {
-            if(spawnedTiles.Count > 0)
+            if(currentMap.spawnedTiles.Count > 0)
             {
-                for (int i = spawnedTiles.Count - 1; i >= 0; i--)
+                for (int i = currentMap.spawnedTiles.Count - 1; i >= 0; i--)
                 {
-                    GameObject temp = spawnedTiles[i];
-                    spawnedTiles.Remove(temp);
+                    GameObject temp = currentMap.spawnedTiles[i];
+                    currentMap.spawnedTiles.Remove(temp);
                 }
             }
             DestroyImmediate(transform.Find(mapContainer).gameObject);
@@ -82,7 +83,7 @@ public class Grid : MonoBehaviour
                 newTile.transform.localScale = Vector3.one * (1 - currentMap.outlinePercent);
                 newTile.transform.parent = mapHolder;
                 //Tile script = newTile.GetComponent<Tile>();
-                spawnedTiles.Add(newTile);
+                currentMap.spawnedTiles.Add(newTile);
             }
         }
     }
