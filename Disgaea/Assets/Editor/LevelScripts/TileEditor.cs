@@ -7,24 +7,30 @@ using UnityEditor;
 public class TileEditor : Editor
 {
 
+    Tile m_Target;
     public override void OnInspectorGUI()
     {
+        m_Target = target as Tile;
 
         EditorGUILayout.HelpBox("This script manipulates indivdual tiles", MessageType.Info);
 
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
 
-        Tile tile = target as Tile;
-        if (tile)
+        if(DrawDefaultInspector())
         {
-            tile.ManipulateTile();
+  
+        }
+
+        if (m_Target)
+        {
+            m_Target.ManipulateTile();
         }
 
         if(GUILayout.Button("Apply Changes"))
         {
-            if(tile)
+            if(m_Target)
             {
-                tile.ApplyChanges();
+                m_Target.ApplyChanges();
             }
         }
     }

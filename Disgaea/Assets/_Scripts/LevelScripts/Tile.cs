@@ -5,18 +5,25 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 
-    public static float worldToGameScaleRatio = 0.1f;
+    public static float worldToGameScaleRatio = 0.2f;
 
     public float maxHeight = 5.0f;
 
     [Header("The conversion of units is every 1 in world is 0.1f in game")]
-    public float heightModifier = 10.0f;
+    [Range(10,30)]
+    public int heightModifier = 10;
 
     private void Start()
     {
         
     }
 
+    float RoundTo1DP(float num, int decimalPlaces)
+    {
+        return Mathf.Round(num * Mathf.Pow(10, decimalPlaces));
+    }
+
+    // My algorithm
     // 1 - 0
     // 2 - 0.5
     // 3 - 1
