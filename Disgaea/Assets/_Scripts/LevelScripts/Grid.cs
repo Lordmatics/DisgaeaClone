@@ -32,9 +32,9 @@ public class Grid : MonoBehaviour
     {
         //CreateGrid();
         string mapContainer = "Generated Map";
-        if(transform.FindChild(mapContainer))
+        if(transform.Find(mapContainer))
         {
-            DestroyImmediate(transform.FindChild(mapContainer).gameObject);
+            DestroyImmediate(transform.Find(mapContainer).gameObject);
         }
 
         Transform mapHolder = new GameObject(mapContainer).transform;
@@ -74,7 +74,7 @@ public class Grid : MonoBehaviour
                 Transform tile = Utility.ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, floorLayermask);
                 if (tile != null)
                 {
-                    Transform canvas = tile.parent.FindChild("Canvas");
+                    Transform canvas = tile.parent.Find("Canvas");
                     int height = GetTileHeight(tile.position.y);                   
                     grid[x, y] = new Node(new Coord(x, y), worldPoint, true, height, canvas.GetChild(0).GetComponent<UnityEngine.UI.Image>(), canvas.GetChild(1).GetComponent<UnityEngine.UI.Image>());
                 }
