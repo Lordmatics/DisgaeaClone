@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class PlayerIcon : MonoBehaviour
 {
-    public Text UICoOrds;
+    /*public Text UICoOrds;
     public Text UIHeight;
     public Text UIMoveDist;
     public int jump;
@@ -73,7 +73,7 @@ public class PlayerIcon : MonoBehaviour
             return 3;
         else
             return _rotation;
-    }
+    }*/
 
    /* void FixedUpdate()
     {
@@ -150,7 +150,7 @@ public class PlayerIcon : MonoBehaviour
         }
     }*/
 
-    void MoveInput()
+    /*void MoveInput()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
@@ -204,8 +204,8 @@ public class PlayerIcon : MonoBehaviour
         }
         SetUI();
         transform.position = new Vector3(transform.position.x, ((float)currentHeight / 10) - 0.1f, transform.position.z);
-    }
-
+    }*/
+    /*
     #region TEST CODE
 
     // To find the amount of tiles to check i found out how much is in 1 quarter by doing k + n, k + (n + 1), k + (n + 2) ... k + (n + move).
@@ -392,150 +392,6 @@ public class PlayerIcon : MonoBehaviour
             return false;
     }
 
-    /*void GenerateMoveZone()
-    {
-        // nodes that are valid tiles that couldn't be set active the first time are added here to be checked a second times later.
-        List<Node> nodesNotInRadius = new List<Node>();
-        // comparison nodes to check for things like height or whether the surrounding tiles are walkable or not.
-        List<Node> nodesToCheck = new List<Node>();
-        //Node currNode = TGetNode(worldCoOrdinates, grid);
-        Node currNode = grid.GetNodeFromWorldCoOrdinate(worldCoOrdinates);
-        int maxNodes = GetTotalMovementTiles(6); // calculates toal tile count for current move distance.
-        int loopCount = 4; // this just means each time the loop runs it checks 1 quadrant.
-        int embeddedIndex = 2; // this is for a loop that checks a quadrant.
-        Vector2 algorithmWorldCoords = worldCoOrdinates + Vector2.up;
-        Vector2 direction = Vector2.zero;
-        int dist = 1;
-        for (int i = 0; i < loopCount; i++) // to generate the first ring of tiles.
-        {
-            currNode = grid.GetNodeFromWorldCoOrdinate(algorithmWorldCoords);
-            if (currNode == null || !currNode.isWalkable)
-            {
-                algorithmWorldCoords = NewDirection(algorithmWorldCoords, i);
-                continue;
-            }
-            // uses current co-ords and loop index to get a specific node adjacent to the current node.
-            Node nodeToCheck = GetSideNode(algorithmWorldCoords, i);
-            // calculates new position for the co-ords relevant for the algorithm.
-            algorithmWorldCoords = NewDirection(algorithmWorldCoords, i);
-            // tell the tile its moveDist = dist.
-            currNode.moveDist = dist;
-
-                currNode.isMoveable = true;
-                currNode.SetCombatTile(0);
-                moveableNodes.Add(currNode);
-            }
-            else // add to list for future checking.
-            {
-                nodesNotInRadius.Add(currNode);
-                //currNode.blueTile.enabled = true;
-            }
-            // tile dist = 1 each;
-        }
-        int counter = 2; // this just allows the while loop to stop and never go on forever
-        while (counter <= 6)
-        {
-            algorithmWorldCoords = worldCoOrdinates + ((Vector2.up) * counter); // set the startPos to be the next ring of tiles up.
-            dist++; // as ech tile is 1 further away from the player, increase dist by 1.
-            for (int i = 0; i < loopCount; i++)
-            {
-                for (int j = 0; j < embeddedIndex; j++) // <-- embedded index == 2 meaning j== 0 (1 node to check), j == 1 (2 node to check) end loop. 
-                {
-                    currNode = grid.GetNodeFromWorldCoOrdinate(algorithmWorldCoords);
-                    if (currNode == null || !currNode.isWalkable)
-                    {
-                        algorithmWorldCoords = NewDirection(algorithmWorldCoords, i);
-                        continue;
-                    }
-                    currNode.moveDist = dist;
-                    if (j == 0)
-                    {
-                        Node nodeToCheck = GetSideNode(algorithmWorldCoords, i);
-                        if (nodeToCheck == null)
-                        {
-                            nodesNotInRadius.Add(currNode);
-                            //currNode.blueTile.enabled = true;
-                            continue;
-                        }
-                        else if (!nodeToCheck.isWalkable)
-                        {
-                            //currNode.blueTile.enabled = true;
-                            continue;
-                        }
-                        if (currNode.isWalkable)
-                        {
-                            if (currNode.tileHeight < nodeToCheck.tileHeight + jump && nodeToCheck.isMoveable)
-                            {
-                                currNode.isMoveable = true;
-                                currNode.SetCombatTile(0);
-                                moveableNodes.Add(currNode);
-                            }
-                            else
-                            {
-                                nodesNotInRadius.Add(currNode);
-                                //currNode.blueTile.enabled = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        nodesToCheck = GetSideNodes(algorithmWorldCoords, i);
-                        for (int k = 0; k < 2; k++)
-                        {
-                            if (nodesToCheck[k] == null || !nodesToCheck[k].isWalkable)
-                                continue;
-                            if (currNode.isWalkable && nodesToCheck[k].isWalkable)
-                            {
-                                if (currNode.tileHeight < nodesToCheck[k].tileHeight + jump && nodesToCheck[k].isMoveable)
-                                {
-                                    currNode.isMoveable = true;
-                                    currNode.SetCombatTile(0);
-                                    moveableNodes.Add(currNode);
-                                    break;
-                                }
-                                else
-                                {
-                                    if (!nodesNotInRadius.Contains(currNode))
-                                    {
-                                        nodesNotInRadius.Add(currNode);
-                                        //currNode.blueTile.enabled = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    algorithmWorldCoords = NewDirection(algorithmWorldCoords, i); // get new co-ords in the current ring
-                }
-            }
-            counter++;
-            embeddedIndex++;
-        }
-        nodesNotInRadius.Reverse();
-        for (int i = 0; i < nodesNotInRadius.Count; i++)
-        {
-            Node singleCheckNode;
-            Vector2 nodeCoords = new Vector2(nodesNotInRadius[i].gridX, nodesNotInRadius[i].gridY);
-            for (int j = 0; j < 4; j++)
-            {
-                singleCheckNode = GetSideNode(nodeCoords, j);
-                if (singleCheckNode != null)
-                {
-                    if (singleCheckNode.isWalkable && singleCheckNode.isMoveable && singleCheckNode.moveDist <= 5) // 5 = move count - 1
-                    {
-                        if (nodesNotInRadius[i].tileHeight < singleCheckNode.tileHeight + jump)
-                        {
-                            nodesNotInRadius[i].isMoveable = true;
-                            moveableNodes.Add(currNode);
-                            nodesNotInRadius[i].SetCombatTile(0);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        //print("Stuff just happened");
-    }*/
-
     Coord NewDirection(Coord dir, int index)
     {
         //print("DirectionIndexer: " + index);
@@ -620,4 +476,5 @@ public class PlayerIcon : MonoBehaviour
         return nodes;
     }
     #endregion
+    */
 }
