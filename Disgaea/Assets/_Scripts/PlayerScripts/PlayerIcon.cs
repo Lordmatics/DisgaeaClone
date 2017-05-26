@@ -7,25 +7,52 @@ public class PlayerIcon : MonoBehaviour
 {
 
     int currentRotationValue;
+    int moveVal;
 
     void WPressed()
     {
-
+        int val = GetDirDifference(0);
     }
 
     void SPressed()
     {
-
+        int val = GetDirDifference(1);
     }
 
     void APressed()
     {
-
+        int val = GetDirDifference(2);
     }
 
     void DPressed()
     {
+        int val = GetDirDifference(3);
+    }
 
+    int GetDirDifference(int dir)
+    {
+        int val = dir + currentRotationValue;
+        if (val > 3)
+            return val - 4;
+        else
+            return val;
+    }
+
+    Vector3 GetDirection(int dir)
+    {
+        switch(dir)
+        {
+            case 0:
+                return Vector3.forward;
+            case 1:
+                return Vector3.back;
+            case 2:
+                return Vector3.left;
+            case 3:
+                return Vector3.right;
+            default:
+                return Vector3.zero;
+        }
     }
 
     void QPressed()
