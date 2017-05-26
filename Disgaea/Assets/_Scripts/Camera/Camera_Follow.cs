@@ -9,6 +9,7 @@ public class Camera_Follow : MonoBehaviour
     public Transform player;
     public float moveTime;
 
+    Transform parent;
     Vector3 defaultPosition = new Vector3(-5, 12, -5);
     Vector3 defaultRotation = new Vector3(59.491f, 45, 0);
     public Vector3 trackingDifference;
@@ -16,18 +17,38 @@ public class Camera_Follow : MonoBehaviour
     public int rotationState = 0;
     bool camMovingFromRotation;
 
+    private void Awake()
+    {
+        parent = transform.parent;
+    }
+
     void FixedUpdate ()
     {
-        transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + trackingDifference, ref reference, moveTime);
-        if(camMovingFromRotation)
+        if(parent.position != player.position)
         {
-            LookAtPlayer();
-            if(Mathf.Approximately(transform.position.x, trackingDifference.x))
+            parent.position = Vector3.SmoothDamp(parent.position, player.transform.position, ref reference, moveTime);
+            if (Utility.Approximately(transform.position.x, parent.position.x))
             {
                 camMovingFromRotation = false;
+                parent.position = player.position;
+            }
+        }
+        if (camMovingFromRotation)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + trackingDifference, ref reference, moveTime);
+            LookAtPlayer();
+            if(Utility.Approximately(transform.position.x, trackingDifference.x))
+            {
+                camMovingFromRotation = false;
+                transform.position = trackingDifference;
             }
         }
 	}
+
+    public void adjustTrackingDist(Vector3 direction)
+    {
+
+    }
 
     public void LookAtPlayer()
     {
