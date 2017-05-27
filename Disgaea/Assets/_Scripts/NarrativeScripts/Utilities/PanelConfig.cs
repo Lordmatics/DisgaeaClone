@@ -39,7 +39,18 @@ public class PanelConfig : MonoBehaviour
     //    }
     //}
 
-    public void Configure(Dialogue currentDialogue)
+    private Coroutine animateTextCoroutine;
+
+    public void StopAnimatingText()
+    {
+        if (animateTextCoroutine != null)
+        {
+            StopCoroutine(animateTextCoroutine);
+            animateTextCoroutine = null;
+        }
+    }
+
+    public void Configure(Dialogue currentDialogue, bool bUseDelay = false, float delay = 1.0f)
     {
         ToggleCharacterMask();
 
@@ -47,16 +58,36 @@ public class PanelConfig : MonoBehaviour
         if(characterNameText != null)
             characterNameText.text = currentDialogue.name;
 
-        if(bCharacterTalking)
+        if (bCharacterTalking)
         {
-            StartCoroutine(BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText));
-            Debug.Log("Text should be animating");
-            Debug.Log(currentDialogue.dialogueText);
-
+            if(bUseDelay)
+            {
+                StartCoroutine(DelayForTextConstruction(currentDialogue, delay));
+            }
+            else
+            {
+                animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText));
+                Debug.Log("Text should be animating");
+                Debug.Log(currentDialogue.dialogueText);
+            }
         }
         else
         {
+            // in a game with 1 shared text box this is not required
             //dialogueText.text = "";
+        }
+    }
+
+    IEnumerator DelayForTextConstruction(Dialogue currentDialogue, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (bCharacterTalking)
+        {
+            animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText));
+            //Debug.Log("Text should be animating");
+            //Debug.Log(currentDialogue.dialogueText);
+
         }
     }
 

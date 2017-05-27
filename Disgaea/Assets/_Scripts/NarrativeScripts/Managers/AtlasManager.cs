@@ -17,7 +17,7 @@ public class AtlasManager : MonoBehaviour, IManager
         sprites = Resources.LoadAll<Sprite>("NarrativeData/NarrativeAtlas");
         currentState = ManagerState.Completed;
 
-        Debug.Log(sprites.Length);
+        //Debug.Log(sprites.Length);
         Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
     }
 

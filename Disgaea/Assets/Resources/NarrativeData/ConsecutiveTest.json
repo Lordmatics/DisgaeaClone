@@ -1,0 +1,37 @@
+// https://jsonformatter.curiousconcept.com/ // JSON checker for syntax
+// https://www.codeandweb.com/blog/2014/03/28/using-spritesheets-with-unity // texture packer pro
+{
+   "dialogues":
+   [
+      {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Welcome to our Disgaea Clone game!"
+      },
+      {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Prepare yourself for something truly amazing"
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Alright, I'm listenning..."
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"CMON... I AM WAITING!"
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Ya know what... goodbye"
+      }
+   ]
+}
