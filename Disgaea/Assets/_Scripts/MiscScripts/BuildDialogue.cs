@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class BuildDialogue : MonoBehaviour
 {
@@ -52,6 +53,22 @@ public class BuildDialogue : MonoBehaviour
         {
             textInQuestion.text += letter;
             yield return new WaitForSeconds(speed);
+        }
+    }
+
+    public static IEnumerator AnimateText_Param(Text textInQuestion, string dialogueText, Action functionName, float speed = 0.05f)
+    {
+        textInQuestion.text = "";
+
+        foreach (char letter in dialogueText)
+        {
+            textInQuestion.text += letter;
+            yield return new WaitForSeconds(speed);
+        }
+
+        if(functionName != null)
+        {
+            functionName();
         }
     }
 }

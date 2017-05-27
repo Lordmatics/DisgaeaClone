@@ -17,6 +17,11 @@ public class PanelManager : MonoBehaviour, IManager
 
     private int stepIndex = 0;
 
+    bool bDisableInput = true;
+
+    [HideInInspector]
+    public float customWait = 1.5f;
+
     public void BootSequence()
     {
         Debug.Log(string.Format("{0} is booting up", GetType().Name));
@@ -56,7 +61,7 @@ public class PanelManager : MonoBehaviour, IManager
         //bLeftCharacterTalking = !bLeftCharacterTalking;
 
 
-        leftPanel.Configure(currentEvent.dialogues[stepIndex], true, 1.5f);
+        leftPanel.Configure(currentEvent.dialogues[stepIndex], true, customWait);
         for (int i = 0; i < currentEvent.dialogues.Count; i++)
         {
             if(currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
@@ -75,9 +80,16 @@ public class PanelManager : MonoBehaviour, IManager
 
         // Animation to begin the conversation
         StartCoroutine(MasterManager.animationManager.EnterConversationAnimation());
+        StartCoroutine(CustomWait());
 
         // Index to increment through the dialogue
         stepIndex++;
+    }
+
+    private IEnumerator CustomWait()
+    {
+        yield return new WaitForSeconds(customWait);
+        bDisableInput = false;
     }
 
     private void ConfigurePanels()
@@ -101,11 +113,14 @@ public class PanelManager : MonoBehaviour, IManager
     }
 
     int swapSpeakerIndex = 0;
+    [SerializeField]
+    bool bCanProceed = false;
     // occurs on player input - Space pressed
-    void UpdatePanelState()
+    public void UpdatePanelState()
     {
         // There is a bug, with the animate text if press space before its finished
 
+        if (bDisableInput) return;
         leftPanel.StopAnimatingText();
         rightPanel.StopAnimatingText();
 
@@ -113,35 +128,76 @@ public class PanelManager : MonoBehaviour, IManager
         // Is within bounds
         if(stepIndex < currentEvent.dialogues.Count)
         {
-            // Iterate over the conversation
-            // Starting at the point in the conversation
-            // That the game is at
-            for (int i = stepIndex; i < currentEvent.dialogues.Count; i++)
-            {
-                // At the earliest point from the current point
-                // When a new speaker is found
-                if (currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
+            //if(!bCanProceed)
+            //{
+                // Iterate over the conversation
+                // Starting at the point in the conversation
+                // That the game is at
+                for (int i = stepIndex; i < currentEvent.dialogues.Count; i++)
                 {
-                    swapSpeakerIndex = i - 1;
-                    break;
+                    // At the earliest point from the current point
+                    // When a new speaker is found
+                    if (currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
+                    {
+                        swapSpeakerIndex = i - 1;
+                        break;
+                    }
                 }
-            }
-            ConfigurePanels();
+
+                // Reveal whole sentence
+
+                if (bLeftCharacterTalking)
+                {
+                    leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+                }
+                else
+                {
+                    rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+                }
+            //}
 
 
-            // if the user is a different user at this index, swap
-            if (swapSpeakerIndex == stepIndex)
+            if (bCanProceed)
             {
-                bLeftCharacterTalking = !bLeftCharacterTalking;
+                bCanProceed = false;
+                //bCanProceed = false;
+                //bCanProceed = false;
+                // STARTS next dialogue
+                ConfigurePanels();
+
+
+                // if the user is a different user at this index, swap
+                if (swapSpeakerIndex == stepIndex)
+                {
+                    bLeftCharacterTalking = !bLeftCharacterTalking;
+                }
+                stepIndex++;
+                return;
+
             }
+            bCanProceed = true;
 
-
-            stepIndex++;
         }
         else
         {
-            // Animation to end the conversation
-            StartCoroutine(MasterManager.animationManager.ExitConversationAnimation());
+            if (stepIndex > currentEvent.dialogues.Count)
+            {
+                // Animation to end the conversation
+                StartCoroutine(MasterManager.animationManager.ExitConversationAnimation());
+            }
+
+            if (bLeftCharacterTalking)
+            {
+                if(stepIndex - 1 < currentEvent.dialogues.Count)
+                    leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+            }
+            else
+            {
+                if (stepIndex - 1 < currentEvent.dialogues.Count)
+                    rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+            }
+            stepIndex++;
+
         }
     }
 }

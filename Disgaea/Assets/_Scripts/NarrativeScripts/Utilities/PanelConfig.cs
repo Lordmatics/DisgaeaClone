@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PanelConfig : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class PanelConfig : MonoBehaviour
 
     private Color activeColor = new Color(255.0f, 222.0f / 255.0f, 137.0f / 255.0f);
     private Color maskActiveColor = new Color(91.0f / 255.0f, 86.0f / 255.0f, 44.0f / 255.0f);
+
+    //private BuildDialogue textAnimator = new BuildDialogue();
 
     public void ToggleCharacterMask()
     {
@@ -50,8 +53,29 @@ public class PanelConfig : MonoBehaviour
         }
     }
 
+    public void ShowCompleteDialogue(Dialogue currentDialogue)
+    {
+        dialogueText.text = currentDialogue.dialogueText;
+    }
+
+
+    Action myFunc;
+    bool bTextFullyShown = false;
+
+    private void OnEnable()
+    {
+        myFunc += CallBack;    
+    }
+
+    private void OnDisable()
+    {
+        myFunc -= CallBack;   
+    }
+
     public void Configure(Dialogue currentDialogue, bool bUseDelay = false, float delay = 1.0f)
     {
+        bTextFullyShown = false;
+
         ToggleCharacterMask();
 
         avatarImage.sprite = MasterManager.atlasManager.LoadSprite(currentDialogue.atlasImageName);
@@ -66,7 +90,8 @@ public class PanelConfig : MonoBehaviour
             }
             else
             {
-                animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText));
+                //animateTextCoroutine = StartCoroutine(textAnimator.LocalAnimateText(dialogueText, currentDialogue.dialogueText));
+                animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText_Param(dialogueText, currentDialogue.dialogueText, myFunc));
                 Debug.Log("Text should be animating");
                 Debug.Log(currentDialogue.dialogueText);
             }
@@ -78,13 +103,19 @@ public class PanelConfig : MonoBehaviour
         }
     }
 
+    void CallBack()
+    {
+        bTextFullyShown = true;
+        MasterManager.panelManager.UpdatePanelState();
+    }
+
     IEnumerator DelayForTextConstruction(Dialogue currentDialogue, float delay)
     {
         yield return new WaitForSeconds(delay);
 
         if (bCharacterTalking)
         {
-            animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText));
+            animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText_Param(dialogueText, currentDialogue.dialogueText, myFunc));
             //Debug.Log("Text should be animating");
             //Debug.Log(currentDialogue.dialogueText);
 
