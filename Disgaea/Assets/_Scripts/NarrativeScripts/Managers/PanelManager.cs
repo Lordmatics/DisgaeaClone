@@ -15,6 +15,7 @@ public class PanelManager : MonoBehaviour, IManager
 
     private bool bLeftCharacterTalking = true;
 
+    [SerializeField]
     private int stepIndex = 0;
 
     bool bDisableInput = true;
@@ -29,7 +30,7 @@ public class PanelManager : MonoBehaviour, IManager
         leftPanel = GameObject.Find("LeftCharacterPanel").GetComponent<PanelConfig>();
         rightPanel = GameObject.Find("RightCharacterPanel").GetComponent<PanelConfig>();
         // Stores reference to conversation
-        currentEvent = JSONAssembly.RunJSONFactoryForIndex(2);
+        currentEvent = JSONAssembly.RunJSONFactoryForIndex("TestOne");
         InitializePanels();
         //currentState = ManagerState.Completed;
 
@@ -112,6 +113,7 @@ public class PanelManager : MonoBehaviour, IManager
         }
     }
 
+    [SerializeField]
     int swapSpeakerIndex = 0;
     [SerializeField]
     bool bCanProceed = false;
@@ -126,34 +128,48 @@ public class PanelManager : MonoBehaviour, IManager
 
         // As long as the current index in dialogue
         // Is within bounds
-        if(stepIndex < currentEvent.dialogues.Count)
+        if (stepIndex < currentEvent.dialogues.Count)
         {
             //if(!bCanProceed)
             //{
-                // Iterate over the conversation
-                // Starting at the point in the conversation
-                // That the game is at
-                for (int i = stepIndex; i < currentEvent.dialogues.Count; i++)
-                {
-                    // At the earliest point from the current point
-                    // When a new speaker is found
-                    if (currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
-                    {
-                        swapSpeakerIndex = i - 1;
-                        break;
-                    }
-                }
+            // Iterate over the conversation
+            // Starting at the point in the conversation
+            // That the game is at
+            int counter = 0;
+            for (int i = stepIndex; i < currentEvent.dialogues.Count; i++)
+            {
+                // At the earliest point from the current point
+                // When a new speaker is found
 
-                // Reveal whole sentence
+            // @ step 0 - counter = 0
+            // @ 0 laharl != laharl - false counter++
+            // @ 1 etna != laharl - true - swapindex = 1 - counter = 0
 
-                if (bLeftCharacterTalking)
+            // @ step 2 - counter = 0
+            // @ 2 laharl != laharl - false - counter = 1
+            // @ 3 laharl != laharl - false - counter = 2
+            // @ 4 laharl != etna - true - swapindex = 4 - counter = 2
+
+                // As soon as the atlasimagename is different to the current name, store the index, when that is
+                if (currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
                 {
-                    leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+                //Debug.Log(string.Format("Image name at loop: {0} , Image name at step index: {1}", currentEvent.dialogues[i].atlasImageName, currentEvent.dialogues[stepIndex].atlasImageName));
+                    swapSpeakerIndex = i;
+                    break;
                 }
-                else
-                {
-                    rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
-                }
+                counter++;
+            }
+
+            // Reveal whole sentence
+
+            if (bLeftCharacterTalking)
+            {
+                leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+            }
+            else
+            {
+                rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+            }
             //}
 
 
@@ -163,7 +179,7 @@ public class PanelManager : MonoBehaviour, IManager
                 //bCanProceed = false;
                 //bCanProceed = false;
                 // STARTS next dialogue
-                ConfigurePanels();
+                //ConfigurePanels();
 
 
                 // if the user is a different user at this index, swap
@@ -171,10 +187,15 @@ public class PanelManager : MonoBehaviour, IManager
                 {
                     bLeftCharacterTalking = !bLeftCharacterTalking;
                 }
+
+                ConfigurePanels();
+
                 stepIndex++;
+
                 return;
 
             }
+
             bCanProceed = true;
 
         }

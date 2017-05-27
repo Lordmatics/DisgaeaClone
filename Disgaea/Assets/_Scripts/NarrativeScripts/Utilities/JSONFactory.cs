@@ -14,13 +14,13 @@ namespace JSONFactory
 {
     class JSONAssembly
     {
-        private static Dictionary<int, string> _resourceList = new Dictionary<int, string>
+        private static Dictionary<string, string> _resourceList = new Dictionary<string, string>
         {
-            {1, "/Resources/NarrativeData/DataTest.json" },
-            {2, "/Resources/NarrativeData/ConsecutiveTest.json" }
+            {"TestOne", "/Resources/NarrativeData/DataTest.json" },
+            {"TestTwo", "/Resources/NarrativeData/ConsecutiveTest.json" }
         };
 
-        public static NarrativeEvent RunJSONFactoryForIndex(int dictionaryIndex)
+        public static NarrativeEvent RunJSONFactoryForIndex(string dictionaryIndex)
         {
             string resourcePath = PathForScene(dictionaryIndex);
 
@@ -36,7 +36,7 @@ namespace JSONFactory
             }
         }
 
-        private static string PathForScene(int dictionaryIndex)
+        private static string PathForScene(string dictionaryIndex)
         {
             string resourcePathResult;
             if(_resourceList.TryGetValue(dictionaryIndex, out resourcePathResult))
