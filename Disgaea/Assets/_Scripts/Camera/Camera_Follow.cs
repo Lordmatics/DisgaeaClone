@@ -13,7 +13,8 @@ public class Camera_Follow : MonoBehaviour
     Vector3 defaultPosition = new Vector3(-5, 12, -5);
     Vector3 defaultRotation = new Vector3(59.491f, 45, 0);
     public Vector3 trackingDifference;
-    Vector3 reference;
+    Vector3 reference_01;
+    Vector3 reference_02;
     public int rotationState = 0;
     bool camMovingFromRotation;
 
@@ -24,35 +25,30 @@ public class Camera_Follow : MonoBehaviour
 
     void FixedUpdate ()
     {
-        if(parent.position != player.position)
+        if (parent.position != player.position)
         {
-            parent.position = Vector3.SmoothDamp(parent.position, player.transform.position, ref reference, moveTime);
-            if (Utility.Approximately(transform.position.x, parent.position.x))
+            parent.position = Vector3.SmoothDamp(parent.position, player.position, ref reference_01, moveTime);
+            if (Utility.Approximately(parent.position.x, player.position.x) &&
+                Utility.Approximately(parent.position.z, player.position.z))
             {
-                camMovingFromRotation = false;
                 parent.position = player.position;
             }
         }
-        if (camMovingFromRotation)
+        if (trackingDifference != transform.localPosition)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, player.transform.position + trackingDifference, ref reference, moveTime);
+            transform.localPosition = Vector3.SmoothDamp(transform.localPosition, trackingDifference, ref reference_02, moveTime);
             LookAtPlayer();
-            if(Utility.Approximately(transform.position.x, trackingDifference.x))
+            if (Utility.Approximately(transform.localPosition.x, trackingDifference.x) &&
+                Utility.Approximately(transform.localPosition.z, trackingDifference.z))
             {
-                camMovingFromRotation = false;
-                transform.position = trackingDifference;
+                transform.localPosition = trackingDifference;
             }
         }
 	}
 
-    public void adjustTrackingDist(Vector3 direction)
-    {
-
-    }
-
     public void LookAtPlayer()
     {
-        transform.LookAt(player.transform);
+        transform.LookAt(parent);
     }
 
     public void RotateCamera(bool left)
@@ -73,10 +69,8 @@ public class Camera_Follow : MonoBehaviour
                 direction *= -1f;
             rotationState = Utility.ClampCycleInt(++rotationState, 0, 3); // ChangeRotationState(++rotationState);
         }
-        Debug.Log(GetDirectionVector(left) * direction * (Mathf.Abs(defaultPosition.x) * 2));
         Vector3 diff = GetDirectionVector(left) * direction * (Mathf.Abs(defaultPosition.x) * 2);
         trackingDifference += diff;
-        LookAtPlayer();
     }
 
     Vector3 GetDirectionVector(bool left)
@@ -84,7 +78,6 @@ public class Camera_Follow : MonoBehaviour
         Debug.Log("Rot state" + rotationState);
         if(rotationState == 0 || rotationState == 2)
         {
-            Debug.Log("right");
             if(left)
                 return Vector3.forward;
             else
@@ -92,7 +85,6 @@ public class Camera_Follow : MonoBehaviour
         }
         else
         {
-            Debug.Log("forward");
             if (left)
                 return Vector3.right;
             else
@@ -116,7 +108,7 @@ public class Camera_Follow : MonoBehaviour
     public void MoveToDefaultPos()
     {
         rotationState = 0;
-        transform.position = defaultPosition;
+        transform.localPosition = defaultPosition;
         LookAtPlayer();
         trackingDifference = defaultPosition;
     }

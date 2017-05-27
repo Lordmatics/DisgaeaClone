@@ -6,9 +6,14 @@ using System.Collections.Generic;
 [AddComponentMenu("Scripts/PlayerScripts/PlayerIcon")]
 public class PlayerIcon : MonoBehaviour
 {
-
+    Camera_Follow cam;
     int currentRotationValue;
     int moveVal;
+
+    private void Awake()
+    {
+        cam = FindObjectOfType<Camera_Follow>();
+    }
 
     void WPressed()
     {
@@ -19,21 +24,21 @@ public class PlayerIcon : MonoBehaviour
 
     void SPressed()
     {
-        int val = GetDirDifference(1);
+        int val = GetDirDifference(2);
         Vector3 dir = GetDirection(val);
         MoveIcon(dir);
     }
 
     void APressed()
     {
-        int val = GetDirDifference(2);
+        int val = GetDirDifference(3);
         Vector3 dir = GetDirection(val);
         MoveIcon(dir);
     }
 
     void DPressed()
     {
-        int val = GetDirDifference(3);
+        int val = GetDirDifference(1);
         Vector3 dir = GetDirection(val);
         MoveIcon(dir);
     }
@@ -41,6 +46,7 @@ public class PlayerIcon : MonoBehaviour
     void MoveIcon(Vector3 dir)
     {
         transform.position += dir;
+        //cam.trackingDifference += dir;
     }
 
     int GetDirDifference(int dir)
@@ -58,11 +64,11 @@ public class PlayerIcon : MonoBehaviour
         {
             case 0:
                 return Vector3.forward;
-            case 1:
-                return Vector3.back;
             case 2:
-                return Vector3.left;
+                return Vector3.back;
             case 3:
+                return Vector3.left;
+            case 1:
                 return Vector3.right;
             default:
                 return Vector3.zero;
