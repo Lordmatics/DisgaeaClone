@@ -43,4 +43,15 @@ public class BuildDialogue : MonoBehaviour
             yield return new WaitForSeconds(waitingBetweenLetter);
         }
     }
+
+    public static IEnumerator AnimateText(Text textInQuestion, string dialogueText, float speed = 0.05f)
+    {
+        textInQuestion.text = "";
+        
+        foreach(char letter in dialogueText)
+        {
+            textInQuestion.text += letter;
+            yield return new WaitForSeconds(speed);
+        }
+    }
 }
