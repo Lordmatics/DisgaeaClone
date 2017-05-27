@@ -92,8 +92,8 @@ public class PanelConfig : MonoBehaviour
             {
                 //animateTextCoroutine = StartCoroutine(textAnimator.LocalAnimateText(dialogueText, currentDialogue.dialogueText));
                 animateTextCoroutine = StartCoroutine(BuildDialogue.AnimateText_Param(dialogueText, currentDialogue.dialogueText, myFunc));
-                Debug.Log("Text should be animating");
-                Debug.Log(currentDialogue.dialogueText);
+                //Debug.Log("Text should be animating");
+                //Debug.Log(currentDialogue.dialogueText);
             }
         }
         else

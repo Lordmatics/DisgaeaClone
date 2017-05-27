@@ -15,27 +15,48 @@
 		"name":"Laharl",
 		"atlasImageName":"LaharlIcon",
 		"dialogueText":"Prepare yourself for something truly amazing",
+		"bMultiLines" : true
+      },
+	  {
+		"characterType":0,
+		"name":"Laharl",
+		"atlasImageName":"LaharlIcon",
+		"dialogueText":"I mean it!!!!",
 		"bMultiLines" : false
       },
 	  {
         "characterType":1,
         "name":"Etna",
         "atlasImageName":"EtnaIcon",
-        "dialogueText":"Alright, I'm listenning...",
+        "dialogueText":"O.o.ooo..k.k.aay",
 		"bMultiLines" : true
       },
 	  {
         "characterType":1,
         "name":"Etna",
         "atlasImageName":"EtnaIcon",
-        "dialogueText":"CMON... I AM WAITING!",
+        "dialogueText":"SPILL IT ALREADY MAN...!",
 		"bMultiLines" : false
       },
 	  {
         "characterType":0,
         "name":"Laharl",
         "atlasImageName":"LaharlIcon",
-        "dialogueText":"Ya know what... goodbye",
+        "dialogueText":"LOL JBAITED",
+		"bMultiLines" : false
+      },
+	  {
+        "characterType":1,
+        "name":"Etna",
+        "atlasImageName":"EtnaIcon",
+        "dialogueText":"I hate you!",
+		"bMultiLines" : false
+      },
+	  {
+        "characterType":0,
+        "name":"Laharl",
+        "atlasImageName":"LaharlIcon",
+        "dialogueText":"Peace Out!",
 		"bMultiLines" : false
       }
    ]

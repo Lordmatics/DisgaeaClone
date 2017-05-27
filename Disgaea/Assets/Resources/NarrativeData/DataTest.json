@@ -1,5 +1,6 @@
 // https://jsonformatter.curiousconcept.com/ // JSON checker for syntax
 // https://www.codeandweb.com/blog/2014/03/28/using-spritesheets-with-unity // texture packer pro
+
 {
    "dialogues":
    [
@@ -7,31 +8,37 @@
          "characterType":0,
          "name":"Laharl",
          "atlasImageName":"LaharlIcon",
-         "dialogueText":"Welcome to our Disgaea Clone game!"
+         "dialogueText":"Welcome to our Disgaea Clone game!",
+		 "bMultiLines" : false
       },
       {
          "characterType":1,
          "name":"Etna",
          "atlasImageName":"EtnaIcon",
-         "dialogueText":"Not you again... *sigh*"
+         "dialogueText":"Not you again... *sigh*",
+		 "bMultiLines" : false
       },
 	  {
          "characterType":0,
          "name":"Laharl",
          "atlasImageName":"LaharlIcon",
-         "dialogueText":"Shut up!"
+         "dialogueText":"Shut up!",
+		 "bMultiLines" : true
+
       },
 	  {
          "characterType":0,
          "name":"Laharl",
          "atlasImageName":"LaharlIcon",
-         "dialogueText":"So, are you prepared for the greatest game ever!"
+         "dialogueText":"So, are you prepared for the greatest game ever!",
+		 "bMultiLines" : false
       },
 	  {
          "characterType":1,
          "name":"Etna",
          "atlasImageName":"EtnaIcon",
-         "dialogueText":"Nope... goodbye"
+         "dialogueText":"Nope... goodbye",
+		 "bMultiLines" : false
       }
    ]
 }

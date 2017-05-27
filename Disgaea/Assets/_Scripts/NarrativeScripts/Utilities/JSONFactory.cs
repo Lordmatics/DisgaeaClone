@@ -17,7 +17,9 @@ namespace JSONFactory
         private static Dictionary<string, string> _resourceList = new Dictionary<string, string>
         {
             {"TestOne", "/Resources/NarrativeData/DataTest.json" },
-            {"TestTwo", "/Resources/NarrativeData/ConsecutiveTest.json" }
+            {"TestTwo", "/Resources/NarrativeData/ConsecutiveTest.json" },
+            {"TestThree", "/Resources/NarrativeData/AnotherConsecutiveTest.json" }
+
         };
 
         public static NarrativeEvent RunJSONFactoryForIndex(string dictionaryIndex)

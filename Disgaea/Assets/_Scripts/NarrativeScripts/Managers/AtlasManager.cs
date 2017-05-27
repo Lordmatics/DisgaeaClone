@@ -11,14 +11,14 @@ public class AtlasManager : MonoBehaviour, IManager
 
     public void BootSequence()
     {
-        Debug.Log(string.Format("{0} is booting up", GetType().Name));
+        //Debug.Log(string.Format("{0} is booting up", GetType().Name));
 
         //sprites = Resources.LoadAll("Sprites", typeof(Sprite)).Cast<Sprite>();
         sprites = Resources.LoadAll<Sprite>("NarrativeData/NarrativeAtlas");
         currentState = ManagerState.Completed;
 
         //Debug.Log(sprites.Length);
-        Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
+        //Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
     }
 
     public Sprite LoadSprite(string spriteName)

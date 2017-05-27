@@ -12,12 +12,12 @@ public class AnimationManager : MonoBehaviour, IManager
 
     public void BootSequence()
     {
-        Debug.Log(string.Format("{0} is booting up", GetType().Name));
+       // Debug.Log(string.Format("{0} is booting up", GetType().Name));
 
         panelAnimator = GameObject.Find("ConversationCanvas").GetComponent<Animator>();
         currentState = ManagerState.Completed;
 
-        Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
+       // Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
     }
 
     public IEnumerator EnterConversationAnimation()
