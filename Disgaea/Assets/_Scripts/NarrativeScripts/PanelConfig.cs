@@ -13,7 +13,7 @@ public class PanelConfig : MonoBehaviour
     public Text dialogueText;
 
     private Color activeColor = new Color(255.0f, 222.0f / 255.0f, 137.0f / 255.0f);
-    private Color maskActiveColor = new Color(103.0f / 255.0f, 101.0f / 255.0f, 101.0f / 255.0f);
+    private Color maskActiveColor = new Color(91.0f / 255.0f, 86.0f / 255.0f, 44.0f / 255.0f);
 
     public void ToggleCharacterMask()
     {
@@ -28,6 +28,16 @@ public class PanelConfig : MonoBehaviour
         }
     }
 
+    //void AnimateText(Dialogue currentDialogue, float speed = 0.05f)
+    //{
+    //    dialogueText.text = "";
+
+    //    foreach (char letter in currentDialogue.dialogueText)
+    //    {
+    //        dialogueText.text += letter;
+    //        yield return new WaitForSeconds(speed);
+    //    }
+    //}
 
     public void Configure(Dialogue currentDialogue)
     {
@@ -39,11 +49,14 @@ public class PanelConfig : MonoBehaviour
 
         if(bCharacterTalking)
         {
-            BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText);
+            StartCoroutine(BuildDialogue.AnimateText(dialogueText, currentDialogue.dialogueText));
+            Debug.Log("Text should be animating");
+            Debug.Log(currentDialogue.dialogueText);
+
         }
         else
         {
-            dialogueText.text = "";
+            //dialogueText.text = "";
         }
     }
 

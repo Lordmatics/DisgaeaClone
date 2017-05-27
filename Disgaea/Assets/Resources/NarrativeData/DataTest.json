@@ -5,15 +5,33 @@
    [
       {
          "characterType":0,
-         "name":"MainCharacter",
-         "atlasImageName":"LarharlIcon",
-         "dialogueText":"Hello World!"
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Welcome to our Disgaea Clone game!"
       },
       {
          "characterType":1,
          "name":"Etna",
          "atlasImageName":"EtnaIcon",
-         "dialogueText":"Goodbye World!"
+         "dialogueText":"Not you again... *sigh*"
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Shut up!"
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"So, are you prepared for the greatest game ever!"
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Nope... goodbye"
       }
    ]
 }

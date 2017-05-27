@@ -17,6 +17,8 @@ public class InputManager : MonoBehaviour
 
     public static event Action fPressed;
 
+    public static event Action spacePressed;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q))
@@ -40,5 +42,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
             if (fPressed != null)
                 fPressed();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            if (spacePressed != null)
+                spacePressed();
     }
 }
