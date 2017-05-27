@@ -31,8 +31,8 @@ public class Grid : MonoBehaviour
             return gridSizeX * gridSizeY;
         }
     }
-    // This can be static maybe?
-    public static float nodeRadius;
+    // This can be static maybe? nah
+    public float nodeRadius;
     Node[,] grid;
 
     //[Range(0,1)]
@@ -45,7 +45,8 @@ public class Grid : MonoBehaviour
     // + Do we want a scene for each level - as in game level
     void Awake()
     {
-        //CreateGrid();
+        currentMap = maps[0]; // Just have 1 map atm.
+        CreateGrid();
     }
 
     public void GenerateVisualGrid()
@@ -103,17 +104,17 @@ public class Grid : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 //Transform tile = ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, floorLayermask);
-                Transform tile = Utility.ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, currentMap.floorLayermask);
-                if (tile != null)
+                //Transform tile = Utility.ShootRaycastTransform(worldPoint + (Vector3.up * 20), Vector3.down, 25, currentMap.floorLayermask);
+                /*if (tile != null)
                 {
                     Transform canvas = tile.parent.Find("Canvas");
                     int height = GetTileHeight(tile.position.y);                   
                     grid[x, y] = new Node(new Coord(x, y), worldPoint, true, height, canvas.GetChild(0).GetComponent<UnityEngine.UI.Image>(), canvas.GetChild(1).GetComponent<UnityEngine.UI.Image>());
-                }
-                else
-                {
+                }*/
+                //else
+                //{
                     grid[x, y] = new Node(new Coord(gridSizeX, gridSizeY), worldPoint, false);
-                }
+                //}
             }
         }
     }
@@ -128,7 +129,7 @@ public class Grid : MonoBehaviour
     {
         int x = coOrdinate.x;
         int z = coOrdinate.z;
-        if (x > gridSizeX - 1|| x < 0 || z > gridSizeY - 1 || z < 0)
+        if (x > (int)currentMap.gridWorldSize.x - 1|| x < 0 || z > (int)currentMap.gridWorldSize.y - 1 || z < 0)
         {
             return null;
         }
@@ -137,11 +138,60 @@ public class Grid : MonoBehaviour
 
     public Coord GetWorldCoOrdinates(Vector3 position)
     {
-        int gridRadius = ((gridSizeX - 1) / 2);
+        int gridRadius = (((int)currentMap.gridWorldSize.x - 1) / 2);
         int x = (int)position.x + gridRadius;
         int z = (int)position.z + gridRadius;
 
         return new Coord(x, z);
+    }
+
+    public bool InBorderCheck(Coord check)
+    {
+        int gridRadius = (((int)currentMap.gridWorldSize.x - 1) / 2);
+        if (check.x <= gridRadius &&
+            check.z <= gridRadius &&
+            check.x >= -gridRadius &&
+            check.z >= -gridRadius)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public Vector2 AlternateBorderCheck(Coord check, Vector2 dir)
+    {
+        print(check.x +"_"+ check.z);
+        int gridRadius = (((int)currentMap.gridWorldSize.x - 1) / 2);
+        /*
+        if (check.x <= gridRadius && // if x is within the bounds by z isn't.
+            check.x >= -gridRadius &&
+            check.z > gridRadius ||
+            check.x <= gridRadius && // if x is within the bounds by z isn't.
+            check.x >= -gridRadius &&
+            check.z < -gridRadius)
+        {
+            return new Vector2(1 * Mathf.Sign(check.x), 0);
+        }
+        else if (check.z <= gridRadius && // if z is within the bounds by x isn't.
+                 check.z >= -gridRadius &&
+                 check.x > gridRadius ||
+                 check.z <= gridRadius && // if z is within the bounds by x isn't.
+                 check.z >= -gridRadius &&
+                 check.x < -gridRadius)
+        {
+            return new Vector2(0, 1 * Mathf.Sign(check.x));
+        }*/
+        if(check.x <= gridRadius && check.x >= -gridRadius)
+        {
+            if (check.z > gridRadius || check.z < gridRadius)
+                return new Vector2(1 * Mathf.Sign(dir.x), 0);
+        }
+        else if (check.z <= gridRadius && check.z >= -gridRadius)
+        {
+            if (check.x > gridRadius || check.x < gridRadius)
+                return new Vector2(0, 1 * Mathf.Sign(dir.y));
+        }
+        return Vector2.zero;
     }
 }
 

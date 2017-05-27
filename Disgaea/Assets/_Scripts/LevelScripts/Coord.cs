@@ -6,6 +6,7 @@ using UnityEngine;
 // static functions for all directions
 // Just overload more operators if and when any are needed
 // syntax is copy pastable
+[System.Serializable]
 public struct Coord
 {
     public int x;
@@ -17,49 +18,49 @@ public struct Coord
         z = _z;
     }
 
-    public static Coord Zero()
+    public static Coord zero()
     {
         return new Coord(0, 0);
     }
 
-    public static Coord NE()
+    public static Coord nE()
     {
-        return Up() + Right();
+        return up() + right();
     }
 
-    public static Coord SE()
+    public static Coord sE()
     {
-        return Down() + Right();
+        return down() + right();
     }
 
-    public static Coord SW()
+    public static Coord sW()
     {
-        return Down() + Left();
+        return down() + left();
     }
 
-    public static Coord NW()
+    public static Coord nW()
     {
-        return Up() + Left();
+        return up() + left();
     }
 
-    public static Coord Up()
+    public static Coord up()
     {
         return new Coord(0, 1);
     }
 
-    public static Coord Right()
+    public static Coord right()
     {
         return new Coord(1, 0);
     }
 
-    public static Coord Left()
+    public static Coord left()
     {
-        return -Right();
+        return -right();
     }
 
-    public static Coord Down()
+    public static Coord down()
     {
-        return -Up();
+        return -up();
     }
 
     public static Coord operator +(Coord a, Coord b)

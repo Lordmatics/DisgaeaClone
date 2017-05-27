@@ -139,28 +139,28 @@ public class InputManager : MonoBehaviour
 
     void KeyBoardReleased()
     {
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKeyUp(KeyCode.Q))
             if (qReleased != null)
                 qReleased();
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyUp(KeyCode.E))
             if (eReleased != null)
                 eReleased();
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKeyUp(KeyCode.W))
             if (wReleased != null)
                 wReleased();
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyUp(KeyCode.A))
             if (aReleased != null)
                 aReleased();
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKeyUp(KeyCode.S))
             if (sReleased != null)
                 sReleased();
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKeyUp(KeyCode.D))
             if (dReleased != null)
                 dReleased();
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKeyUp(KeyCode.F))
             if (fReleased != null)
                 fReleased();
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
             if (spaceReleased != null)
                 spaceReleased();
     }

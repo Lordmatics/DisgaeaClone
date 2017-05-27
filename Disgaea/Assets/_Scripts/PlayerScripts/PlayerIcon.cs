@@ -6,47 +6,123 @@ using System.Collections.Generic;
 [AddComponentMenu("Scripts/PlayerScripts/PlayerIcon")]
 public class PlayerIcon : MonoBehaviour
 {
+    Grid grid;
+    public float moveTimeIncrement;
+
+    public Coord iconCoOrds;
     Camera_Follow cam;
     int currentRotationValue;
     int moveVal;
 
+    int moveKeysPressed;
+    public Vector3 direction;
+
     private void Awake()
     {
         cam = FindObjectOfType<Camera_Follow>();
+        grid = FindObjectOfType<Grid>();
     }
 
+    #region INPUT
+    #region PRESSED
+    void MoveKeyPressed(int val)
+    {
+        Vector3 dir = GetDirection(val);
+        direction += dir;
+        if (moveKeysPressed == 0)
+        {
+            StartCoroutine("MoveIcon");
+            return;
+        }
+        moveKeysPressed++;
+    }
+    
     void WPressed()
     {
-        int val = GetDirDifference(0);
-        Vector3 dir = GetDirection(val);
-        MoveIcon(dir);
+        MoveKeyPressed(GetDirDifference(0));
     }
 
     void SPressed()
     {
-        int val = GetDirDifference(2);
-        Vector3 dir = GetDirection(val);
-        MoveIcon(dir);
+        MoveKeyPressed(GetDirDifference(2));
     }
 
     void APressed()
     {
-        int val = GetDirDifference(3);
-        Vector3 dir = GetDirection(val);
-        MoveIcon(dir);
+        MoveKeyPressed(GetDirDifference(3));
     }
 
     void DPressed()
     {
-        int val = GetDirDifference(1);
+        MoveKeyPressed(GetDirDifference(1));
+    }
+    #endregion
+    #region HELD
+    #endregion
+    #region RELEASED
+    void MoveKeyReleased(int val)
+    {
+        moveKeysPressed--;
         Vector3 dir = GetDirection(val);
-        MoveIcon(dir);
+        direction -= dir;
     }
 
-    void MoveIcon(Vector3 dir)
+    void WReleased()
     {
-        transform.position += dir;
-        //cam.trackingDifference += dir;
+        int val = GetDirDifference(0);
+        MoveKeyReleased(val);
+    }
+
+    void SReleased()
+    {
+        int val = GetDirDifference(2);
+        MoveKeyReleased(val);
+    }
+
+    void AReleased()
+    {
+        int val = GetDirDifference(3);
+        MoveKeyReleased(val);
+    }
+
+    void DReleased()
+    {
+        int val = GetDirDifference(1);
+        MoveKeyReleased(val);
+    }
+    #endregion
+    #endregion
+
+    IEnumerator MoveIcon()
+    {
+        moveKeysPressed++;
+        SetPlayerPos();
+        while (moveKeysPressed > 0)
+        {
+            yield return new WaitForSeconds(moveTimeIncrement);
+            SetPlayerPos();
+        }
+    }
+
+    void SetPlayerPos()
+    {
+        Vector2 dir = new Vector2(direction.x, direction.z);
+        bool canMove = grid.InBorderCheck(iconCoOrds + dir);
+        if (canMove)
+        {
+            transform.position += direction;
+            iconCoOrds += dir;
+        }
+        else if(moveKeysPressed >= 2)
+        {
+            Vector2 canMoveSingle = grid.AlternateBorderCheck(iconCoOrds + dir, dir);
+            print(canMoveSingle);
+            if (canMoveSingle != dir && canMoveSingle != Vector2.zero)
+            {
+                transform.position += new Vector3(canMoveSingle.x, 0, canMoveSingle.y);
+                iconCoOrds += canMoveSingle;
+            }
+        }
     }
 
     int GetDirDifference(int dir)
@@ -60,6 +136,7 @@ public class PlayerIcon : MonoBehaviour
 
     Vector3 GetDirection(int dir)
     {
+
         switch(dir)
         {
             case 0:
@@ -93,6 +170,11 @@ public class PlayerIcon : MonoBehaviour
         InputManager.dPressed += DPressed;
         InputManager.qPressed += QPressed;
         InputManager.ePressed += EPressed;
+
+        InputManager.wReleased += WReleased;
+        InputManager.sReleased += SReleased;
+        InputManager.aReleased += AReleased;
+        InputManager.dReleased += DReleased;
     }
 
     private void OnDisable()
@@ -103,6 +185,11 @@ public class PlayerIcon : MonoBehaviour
         InputManager.dPressed -= DPressed;
         InputManager.qPressed -= QPressed;
         InputManager.ePressed -= EPressed;
+
+        InputManager.wReleased -= WReleased;
+        InputManager.sReleased -= SReleased;
+        InputManager.aReleased -= AReleased;
+        InputManager.dReleased -= DReleased;
     }
 
 

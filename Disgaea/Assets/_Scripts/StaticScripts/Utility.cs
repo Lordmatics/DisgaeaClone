@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public static class Utility
 {
@@ -95,4 +96,58 @@ public static class Utility
         }
         return false;
     }
+
+    /*
+    #region INVOKE METHOD
+    public static void InvokeMethod(Action method, float timeDelay)
+    {
+        StartCoroutine(_InvokeMethod(method, timeDelay));
+    }
+
+    public static void InvokeMethod(Action[] method, float[] timeDelay)
+    {
+
+    }
+
+    public static void InvokeMethod<T>(Action<T> method, float timeDelay, T methodParam)
+    {
+
+    }
+
+    public static void InvokeMethod<T>(Action<T>[] method, float[] timeDelay, T[] methodParam)
+    {
+
+    }
+
+    static IEnumerator _InvokeMethod(Action method, float timeDelay)
+    {
+        yield return new WaitForSeconds(timeDelay);
+        method();
+    }
+
+    static IEnumerator _InvokeMethod(Action[] method, float[] timeDelay)
+    {
+        for (int i = 0; i < method.Length; i++)
+        {
+            yield return new WaitForSeconds(timeDelay[i]);
+            method[i]();
+        }
+    }
+
+    static IEnumerator _InvokeMethod<T>(Action<T> method, float timeDelay, T methodParam)
+    {
+        yield return new WaitForSeconds(timeDelay);
+        method(methodParam);
+    }
+
+    static IEnumerator _InvokeMethod<T>(Action<T>[] method, float[] timeDelay, T[] methodParam)
+    {
+        for (int i = 0; i < method.Length; i++)
+        {
+            yield return new WaitForSeconds(timeDelay[i]);
+            method[i](methodParam[i]);
+        }
+    }
+    #endregion
+    */
 }
