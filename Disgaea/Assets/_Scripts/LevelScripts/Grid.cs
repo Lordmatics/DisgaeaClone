@@ -55,7 +55,6 @@ public class Grid : MonoBehaviour
     public void GenerateVisualGrid()
     {
         //CreateGrid();
-        ClearTileMap();
         string mapContainer = "Generated Map";
         if(transform.Find(mapContainer))
         {
@@ -132,7 +131,7 @@ public class Grid : MonoBehaviour
         for (int x = 0; x < nodeInformation.tileHeights.Count; x++)
         {
             print(x);
-            if (nodeInformation.tileWorldPositionData[x] != Vector3.zero)
+            if (nodeInformation.tileHeights[x] != 0)
             {
                 GameObject newTile = (GameObject)Instantiate(Resources.Load("GridPrefabs/GridNode"), nodeInformation.tileWorldPositionData[x], Quaternion.identity);
                 newTile.GetComponent<Tile>().SetTile(nodeInformation.tileHeights[x]);
