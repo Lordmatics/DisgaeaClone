@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour
     public static event Action fPressed;
 
     public static event Action spacePressed;
+    public static event Action leftShiftPressed;
     #endregion
     #region Held
     public static event Action qHeld;
@@ -45,6 +46,7 @@ public class InputManager : MonoBehaviour
     public static event Action fReleased;
 
     public static event Action spaceReleased;
+    public static event Action leftShiftReleased;
     #endregion
     #endregion
 
@@ -107,6 +109,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             if (spacePressed != null)
                 spacePressed();
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (leftShiftPressed != null)
+                leftShiftPressed();
     }
 
     void KeyBoardHeld()
@@ -163,6 +168,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
             if (spaceReleased != null)
                 spaceReleased();
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+            if (leftShiftReleased != null)
+                leftShiftReleased();
     }
     #endregion
 

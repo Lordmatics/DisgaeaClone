@@ -11,10 +11,13 @@ public class PlayerIcon : MonoBehaviour
 
     public Coord iconCoOrds;
     Camera_Follow cam;
-    int currentRotationValue;
+    public int currentRotationValue;
     int moveVal;
 
-    int moveKeysPressed;
+    public bool wPressed;
+    public bool aPressed;
+    public bool sPressed;
+    public bool dPressed;
     public Vector3 direction;
 
     private void Awake()
@@ -25,87 +28,170 @@ public class PlayerIcon : MonoBehaviour
 
     #region INPUT
     #region PRESSED
-    void MoveKeyPressed(int val)
+
+    void SetDirection()
     {
-        Vector3 dir = GetDirection(val);
-        direction += dir;
-        if (moveKeysPressed == 0)
+        Vector3 dir = GetDirection();
+        direction = dir;
+    }
+
+    Coroutine moveCoroutine;
+    void Move()
+    {
+        if (moveCoroutine == null)
         {
-            StartCoroutine("MoveIcon");
+            moveCoroutine = StartCoroutine("MoveIcon");
             return;
         }
-        moveKeysPressed++;
     }
-    
+
     void WPressed()
     {
-        MoveKeyPressed(GetDirDifference(0));
+        if (!sPressed)
+            wPressed = true;
+        sPressed = false;
+        SetDirection();
+        Move();
     }
 
     void SPressed()
     {
-        MoveKeyPressed(GetDirDifference(2));
+        if(!wPressed)
+            sPressed = true;
+        wPressed = false;
+        SetDirection();
+        Move();
     }
 
     void APressed()
     {
-        MoveKeyPressed(GetDirDifference(3));
+        if (!dPressed)
+            aPressed = true;
+        dPressed = false;
+        SetDirection();
+        Move();
     }
 
     void DPressed()
     {
-        MoveKeyPressed(GetDirDifference(1));
+        if (!aPressed)
+            dPressed = true;
+        aPressed = false;
+        SetDirection();
+        Move();
     }
     #endregion
     #region HELD
     #endregion
     #region RELEASED
-    void MoveKeyReleased(int val)
+    void MoveKeyReleased()
     {
-        moveKeysPressed--;
-        Vector3 dir = GetDirection(val);
-        direction -= dir;
+        Vector3 dir = GetDirection();
+        direction = dir;
+        Move();
+    }
+
+    bool StopMoveCoroutine(bool bool01, bool bool02, bool bool03)
+    {
+        if(!bool01 && !bool02 && !bool03 && moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+            return true;
+        }
+        return false;
+    }
+
+    void StopMoveCoroutine(bool bool01, bool bool02)
+    {
+        if (!bool01 && !bool02 && moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
     }
 
     void WReleased()
     {
-        int val = GetDirDifference(0);
-        MoveKeyReleased(val);
+        if (Input.GetKey(KeyCode.S))
+            sPressed = true;
+        if (wPressed == true || sPressed)
+        {
+            wPressed = false;
+            if(!StopMoveCoroutine(sPressed, aPressed, dPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(aPressed, dPressed);
     }
 
     void SReleased()
     {
-        int val = GetDirDifference(2);
-        MoveKeyReleased(val);
+        if (Input.GetKey(KeyCode.W))
+            wPressed = true;
+        if (sPressed == true || wPressed)
+        {
+            sPressed = false;
+            if (!StopMoveCoroutine(wPressed, aPressed, dPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(aPressed, dPressed);
     }
 
     void AReleased()
     {
-        int val = GetDirDifference(3);
-        MoveKeyReleased(val);
+        if (Input.GetKey(KeyCode.D))
+            dPressed = true;
+        if (aPressed == true || dPressed)
+        {
+            aPressed = false;
+            if (!StopMoveCoroutine(wPressed, sPressed, dPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(wPressed, sPressed);
     }
 
     void DReleased()
     {
-        int val = GetDirDifference(1);
-        MoveKeyReleased(val);
+        if (Input.GetKey(KeyCode.A))
+            aPressed = true;
+        if (dPressed == true || aPressed)
+        {
+            dPressed = false;
+            if (!StopMoveCoroutine(wPressed, sPressed, aPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(wPressed, sPressed);
     }
     #endregion
     #endregion
 
     IEnumerator MoveIcon()
     {
-        moveKeysPressed++;
         SetPlayerPos();
-        while (moveKeysPressed > 0)
+        yield return new WaitForSeconds(moveTimeIncrement);
+        while (wPressed || sPressed || aPressed || dPressed)
         {
-            yield return new WaitForSeconds(moveTimeIncrement);
             SetPlayerPos();
+            yield return new WaitForSeconds(moveTimeIncrement);
         }
+        moveCoroutine = null;
     }
 
     void SetPlayerPos()
     {
+        /*
         Vector2 dir = new Vector2(direction.x, direction.z);
         bool canMove = grid.InBorderCheck(iconCoOrds + dir);
         if (canMove)
@@ -123,43 +209,102 @@ public class PlayerIcon : MonoBehaviour
                 iconCoOrds += canMoveSingle;
             }
         }
+        */
+        Vector2 dir = new Vector2(direction.x, direction.z);
+        Vector2 canMoveSingle = grid.AlternateBorderCheck(iconCoOrds + dir, dir);
+        if (grid.InBorderCheck(iconCoOrds + dir))
+        {
+            if (dir != Vector2.zero)
+            {
+                transform.position += direction;
+                iconCoOrds += dir;
+            }
+        }
     }
 
     int GetDirDifference(int dir)
     {
-        int val = dir + currentRotationValue;
-        if (val > 3)
-            return val - 4;
+        int val = dir + (currentRotationValue * 2);
+        if (val > 7)
+            return val - 8;
         else
             return val;
     }
 
-    Vector3 GetDirection(int dir)
+    Vector3 GetDirection()
     {
-
-        switch(dir)
+        int dir = GetDir();
+        print(dir);
+        if(dir != 9)
+            dir = GetDirDifference(dir);
+        print(dir);
+        switch (dir)
         {
             case 0:
                 return Vector3.forward;
-            case 2:
-                return Vector3.back;
-            case 3:
-                return Vector3.left;
             case 1:
+                return Vector3.left + Vector3.forward;
+            case 2:
+                return Vector3.left;
+            case 3:
+                return Vector3.back + Vector3.left;
+            case 4:
+                return Vector3.back;
+            case 5:
+                return Vector3.right + Vector3.back;
+            case 6:
                 return Vector3.right;
+            case 7:
+                return Vector3.forward + Vector3.right;
             default:
                 return Vector3.zero;
         }
     }
 
-    void QPressed()
+    int GetDir()
     {
-        currentRotationValue = Utility.ClampCycleInt(--currentRotationValue, 0, 3);
+        if (wPressed && !aPressed && !sPressed && !dPressed)
+            return 0;
+        else if (wPressed && aPressed && !sPressed && !dPressed)
+            return 1;
+        else if (!wPressed && aPressed && !sPressed && !dPressed)
+            return 2;
+        else if (!wPressed && aPressed && sPressed && !dPressed)
+            return 3;
+        else if (!wPressed && !aPressed && sPressed && !dPressed)
+            return 4;
+        else if (!wPressed && !aPressed && sPressed && dPressed)
+            return 5;
+        else if (!wPressed && !aPressed && !sPressed && dPressed)
+            return 6;
+        else if (wPressed && !aPressed && !sPressed && dPressed)
+            return 7;
+        else
+            return 9;
     }
 
-    void EPressed()
+    public void QPressed()
     {
         currentRotationValue = Utility.ClampCycleInt(++currentRotationValue, 0, 3);
+        if(moveCoroutine != null)
+            direction = GetDirection();
+    }
+
+    public void EPressed()
+    {
+        currentRotationValue = Utility.ClampCycleInt(--currentRotationValue, 0, 3);
+        if (moveCoroutine != null)
+            direction = GetDirection();
+    }
+
+    public void LeftShiftPressed()
+    {
+        moveTimeIncrement /= 2f;
+    }
+
+    public void LeftShiftReleased()
+    {
+        moveTimeIncrement *= 2f;
     }
 
     private void OnEnable()
@@ -170,11 +315,13 @@ public class PlayerIcon : MonoBehaviour
         InputManager.dPressed += DPressed;
         InputManager.qPressed += QPressed;
         InputManager.ePressed += EPressed;
+        InputManager.leftShiftPressed += LeftShiftPressed;
 
         InputManager.wReleased += WReleased;
         InputManager.sReleased += SReleased;
         InputManager.aReleased += AReleased;
         InputManager.dReleased += DReleased;
+        InputManager.leftShiftReleased += LeftShiftReleased;
     }
 
     private void OnDisable()
@@ -185,11 +332,13 @@ public class PlayerIcon : MonoBehaviour
         InputManager.dPressed -= DPressed;
         InputManager.qPressed -= QPressed;
         InputManager.ePressed -= EPressed;
+        InputManager.leftShiftPressed -= LeftShiftPressed;
 
         InputManager.wReleased -= WReleased;
         InputManager.sReleased -= SReleased;
         InputManager.aReleased -= AReleased;
         InputManager.dReleased -= DReleased;
+        InputManager.leftShiftReleased -= LeftShiftReleased;
     }
 
 
