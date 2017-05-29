@@ -27,11 +27,14 @@ public class AnimationManager : MonoBehaviour, IManager
         yield return new WaitForSeconds(1.0f);
     }
 
-    public IEnumerator ExitConversationAnimation()
+    public IEnumerator ExitConversationAnimation(Action myFunction = null)
     {
         AnimationTuple exitConversationAnim = Constants.AnimationTuples.exitAnimation;
         panelAnimator.SetBool(exitConversationAnim.parameter, exitConversationAnim.value);
         yield return new WaitForSeconds(1.0f);
+
+        if(myFunction != null)
+            myFunction();
 
     }
 }

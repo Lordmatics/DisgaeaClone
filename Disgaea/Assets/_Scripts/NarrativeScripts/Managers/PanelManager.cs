@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using JSONFactory;
+using System;
 
 public enum MultiLines
 {
@@ -58,18 +59,26 @@ public class PanelManager : MonoBehaviour, IManager
         UpdatePanelState();
     }
 
+    Action OnConversationEnd;
+
     private void OnEnable()
     {
         InputManager.spacePressed += SpacePressed;
+        OnConversationEnd += DummyFunction;
     }
 
     private void OnDisable()
     {
         InputManager.spacePressed -= SpacePressed;
+        OnConversationEnd -= DummyFunction;
     }
 
-    public void InitializePanels(string conversationStringFromJSONFactory)
+    public void BeginConversationLoadAt(string conversationStringFromJSONFactory)
     {
+
+        stepIndex = 0;
+        leftPanel.dialogueText.text = "";
+        rightPanel.dialogueText.text = "";
 
         currentEvent = JSONAssembly.RunJSONFactoryForIndex(conversationStringFromJSONFactory);
 
@@ -92,6 +101,7 @@ public class PanelManager : MonoBehaviour, IManager
 
             }
             // Add code to set default image template it nothing, if its a one man conversation
+            rightPanel.Configure(true);
         }
         // Might wanna add something, to initialise right panel to "placeholder" in the
         // Event the conversation is simply one person only
@@ -247,10 +257,10 @@ public class PanelManager : MonoBehaviour, IManager
             if (stepIndex > currentEvent.dialogues.Count)
             {
                 // Animation to end the conversation
-                StartCoroutine(MasterManager.animationManager.ExitConversationAnimation());
+                StartCoroutine(MasterManager.animationManager.ExitConversationAnimation(OnConversationEnd));
                 return;
             }
-
+            
             if (bLeftCharacterTalkingIsNext)
             {
                 if(stepIndex - 1 < currentEvent.dialogues.Count)
@@ -264,5 +274,10 @@ public class PanelManager : MonoBehaviour, IManager
             stepIndex++;
 
         }
+    }
+
+    public void DummyFunction()
+    {
+        Debug.Log("FunctionCalled TEST");
     }
 }

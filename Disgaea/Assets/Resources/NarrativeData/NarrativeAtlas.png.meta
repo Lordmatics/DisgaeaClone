@@ -1,11 +1,41 @@
 fileFormatVersion: 2
 guid: 914a9d1532584ba4f846578dde45dba5
-timeCreated: 1495903882
+timeCreated: 1496075189
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: EtnaIcon
     21300002: LaharlIcon
+    21300004: AngelIcon
+    21300006: ArcherIcon
+    21300008: BrawlerFIcon
+    21300010: BrawlerIcon
+    21300012: Etna2Icon
+    21300014: FireMageIcon
+    21300016: FireSkullIcon
+    21300018: FlonneIcon
+    21300020: GordonIcon
+    21300022: HealerFIcon
+    21300024: HealerIcon
+    21300026: HoggmeiserIcon
+    21300028: JenniferIcon
+    21300030: KurtisPrinnyIcon
+    21300032: Laharl2Icon
+    21300034: MaderasIcon
+    21300036: MagicKnightIcon
+    21300038: MajinIcon
+    21300040: MarjolyIcon
+    21300042: NinjaIcon
+    21300044: PlenairIcon
+    21300046: PriereIcon
+    21300048: PrinnyIcon
+    21300050: SamuraiIcon
+    21300052: ScoutIcon
+    21300054: ThiefIcon
+    21300056: ThursdayIcon
+    21300058: WarriorFIcon
+    21300060: WarriorIcon
+    21300062: EmptyIcon
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -30,7 +60,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: -1
   nPOTScale: 0
@@ -60,9 +90,119 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: iPhone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
+    - serializedVersion: 2
+      name: AngelIcon
+      rect:
+        serializedVersion: 2
+        x: 783
+        y: 828
+        width: 95
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ArcherIcon
+      rect:
+        serializedVersion: 2
+        x: 870
+        y: 540
+        width: 94
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BrawlerFIcon
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 730
+        width: 94
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: BrawlerIcon
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 923
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: EmptyIcon
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 58
+        width: 1
+        height: 1
+      alignment: 9
+      pivot: {x: 200, y: -199}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Etna2Icon
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 928
+        width: 97
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
     - serializedVersion: 2
       name: EtnaIcon
       rect:
@@ -77,6 +217,136 @@ TextureImporter:
       outline: []
       tessellationDetail: -1
     - serializedVersion: 2
+      name: FireMageIcon
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 732
+        width: 95
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: FireSkullIcon
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 927
+        width: 95
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: FlonneIcon
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 538
+        width: 93
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: GordonIcon
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 442
+        width: 92
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: HealerFIcon
+      rect:
+        serializedVersion: 2
+        x: 769
+        y: 538
+        width: 93
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: HealerIcon
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 829
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: HoggmeiserIcon
+      rect:
+        serializedVersion: 2
+        x: 864
+        y: 444
+        width: 93
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: JenniferIcon
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 829
+        width: 95
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: KurtisPrinnyIcon
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 925
+        width: 96
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Laharl2Icon
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 634
+        width: 94
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
       name: LaharlIcon
       rect:
         serializedVersion: 2
@@ -84,6 +354,188 @@ TextureImporter:
         y: 61
         width: 480
         height: 480
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MaderasIcon
+      rect:
+        serializedVersion: 2
+        x: 580
+        y: 634
+        width: 94
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MagicKnightIcon
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 729
+        width: 94
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MajinIcon
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 927
+        width: 98
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: MarjolyIcon
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 440
+        width: 91
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: NinjaIcon
+      rect:
+        serializedVersion: 2
+        x: 870
+        y: 635
+        width: 94
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: PlenairIcon
+      rect:
+        serializedVersion: 2
+        x: 674
+        y: 442
+        width: 92
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: PriereIcon
+      rect:
+        serializedVersion: 2
+        x: 581
+        y: 729
+        width: 95
+        height: 98
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: PrinnyIcon
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 537
+        width: 93
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: SamuraiIcon
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 536
+        width: 93
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ScoutIcon
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 633
+        width: 94
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ThiefIcon
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 634
+        width: 94
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: ThursdayIcon
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 827
+        width: 96
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: WarriorFIcon
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 728
+        width: 95
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: WarriorIcon
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 828
+        width: 96
+        height: 98
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

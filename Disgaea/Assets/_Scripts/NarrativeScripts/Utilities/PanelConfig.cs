@@ -72,6 +72,20 @@ public class PanelConfig : MonoBehaviour
         myFunc -= CallBack;   
     }
 
+    // Use this to initialize the panel to "nothingness"
+    public void Configure(bool bEmpty)
+    {
+        if(bEmpty)
+        {
+            bTextFullyShown = false;
+            ToggleCharacterMask();
+            avatarImage.sprite = MasterManager.atlasManager.LoadSprite("EmptyIcon");
+        }
+    }
+
+    // @currentDialogue - Extracts the data from the loaded narrative event
+    // @bUseDelay - Whether to wait for the intro animation to finish before starting
+    // @delay - duration for waiting
     public void Configure(Dialogue currentDialogue, bool bUseDelay = false, float delay = 1.0f)
     {
         bTextFullyShown = false;
@@ -111,6 +125,8 @@ public class PanelConfig : MonoBehaviour
 
     IEnumerator DelayForTextConstruction(Dialogue currentDialogue, float delay)
     {
+        // Make sure string is empty before trying to animate it
+        dialogueText.text = "";
         yield return new WaitForSeconds(delay);
 
         if (bCharacterTalking)

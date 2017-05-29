@@ -75,7 +75,7 @@ public class Camera_Follow : MonoBehaviour
 
     Vector3 GetDirectionVector(bool left)
     {
-        Debug.Log("Rot state" + rotationState);
+        //Debug.Log("Rot state" + rotationState);
         if(rotationState == 0 || rotationState == 2)
         {
             if(left)
