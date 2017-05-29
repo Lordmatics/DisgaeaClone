@@ -19,7 +19,15 @@ namespace JSONFactory
             {"TestOne", "/Resources/NarrativeData/DataTest.json" },
             {"TestTwo", "/Resources/NarrativeData/ConsecutiveTest.json" },
             {"TestThree", "/Resources/NarrativeData/AnotherConsecutiveTest.json" },
-            {"Shop_Weapon", "/Resources/NarrativeData/Shop_Weapon.json" }
+            {"Shop_Weapon", "/Resources/NarrativeData/Shop_Weapon.json" },
+            {"Shop_Armour", "/Resources/NarrativeData/Shop_Armour.json" },
+            {"Shop_Healing", "/Resources/NarrativeData/Shop_Healing.json" },
+            {"Dark_Assembly", "/Resources/NarrativeData/Dark_Assembly.json" },
+            {"Level_Portal", "/Resources/NarrativeData/Level_Portal.json" },
+            {"Item_World", "/Resources/NarrativeData/Item_World.json" },
+            {"Test_Event", "/Resources/NarrativeData/Test_Event.json" }
+
+
         };
 
         public static NarrativeEvent RunJSONFactoryForIndex(string dictionaryIndex)

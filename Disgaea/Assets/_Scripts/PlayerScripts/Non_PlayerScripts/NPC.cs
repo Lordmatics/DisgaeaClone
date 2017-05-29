@@ -11,6 +11,8 @@ public class NPC : MonoBehaviour, IInteractable
 
     Action InteractDelegate;
 
+    public string conversationJSONref = "Shop_Weapon";
+
     private void OnEnable()
     {
         InteractDelegate += SetInteractingFalse;
@@ -25,19 +27,19 @@ public class NPC : MonoBehaviour, IInteractable
     {
         // Open Shop or something
 
-        Debug.Log("Tried to interact : NPC");
+        //Debug.Log("Tried to interact : NPC");
 
         if (!bIsInteracting)
         {
             // Start Conversation
-            MasterManager.panelManager.BeginConversationLoadAt("Shop_Weapon", InteractDelegate);
+            MasterManager.panelManager.BeginConversationLoadAt(conversationJSONref, InteractDelegate);
             bIsInteracting = true;
             Debug.Log("OnInteract Ran from : NPC");
 
         }
 
         // Prevent movement
-
+        // virtual function perhaps for different shops
         // Load Shop
     }
 

@@ -32,7 +32,7 @@ public class PlayerTriggerCone : MonoBehaviour
         if (other.GetComponent<IInteractable>() != null)
         {
             Debug.Log("Exit" + other.gameObject.name);
-            //currentTarget = null;
+            currentTarget = null;
         }
     }
 

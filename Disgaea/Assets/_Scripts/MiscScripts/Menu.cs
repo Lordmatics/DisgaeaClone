@@ -115,19 +115,19 @@ public class Menu : MonoBehaviour {
     public virtual void EnableScrollBar()
     {
         pointer.gameObject.SetActive(true);
-        InputManager.upArrow += Up;
-        InputManager.downArrow += Down;
-        InputManager.releaseUpArrow += ReleaseUp;
-        InputManager.releaseDownArrow += ReleaseDown;
+        //InputManager.upArrow += Up;
+        //InputManager.downArrow += Down;
+        //InputManager.releaseUpArrow += ReleaseUp;
+        //InputManager.releaseDownArrow += ReleaseDown;
     }
 
     public virtual void DisableScrollBar()
     {
         pointer.gameObject.SetActive(false);
-        InputManager.upArrow -= Up;
-        InputManager.downArrow -= Down;
-        InputManager.releaseUpArrow -= ReleaseUp;
-        InputManager.releaseDownArrow -= ReleaseDown;
+        //InputManager.upArrow -= Up;
+        //InputManager.downArrow -= Down;
+        //InputManager.releaseUpArrow -= ReleaseUp;
+        //InputManager.releaseDownArrow -= ReleaseDown;
     }
     #endregion
 }

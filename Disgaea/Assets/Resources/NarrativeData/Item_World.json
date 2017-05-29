@@ -1,0 +1,22 @@
+// https://jsonformatter.curiousconcept.com/ // JSON checker for syntax
+// https://www.codeandweb.com/blog/2014/03/28/using-spritesheets-with-unity // texture packer pro
+
+{
+   "dialogues":
+   [
+      {
+         "characterType": 23,
+         "name":"Item World Keeper",
+         "atlasImageName":"ThiefIcon",
+         "dialogueText":"This is where you can enter the item world!",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":23,
+         "name":"Item World Keeper",
+         "atlasImageName":"ThiefIcon",
+         "dialogueText":"Warning: You will need a Mr Gency Exit if you wish to leave the item world! Or complete 10 floors!",
+		 "bMultiLines" : false
+      }
+   ]
+}

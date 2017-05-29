@@ -90,6 +90,8 @@ public class PanelManager : MonoBehaviour, IManager
         stepIndex = 0;
         leftPanel.dialogueText.text = "";
         rightPanel.dialogueText.text = "";
+        bStopLeftAnim = false;
+        bStopRightAnim = false;
 
         currentEvent = JSONAssembly.RunJSONFactoryForIndex(conversationStringFromJSONFactory);
 
@@ -223,7 +225,7 @@ public class PanelManager : MonoBehaviour, IManager
 
             if (bLeftCharacterTalkingIsNext)
             {
-                if(bStopLeftAnim)
+                if(bStopLeftAnim || bStopRightAnim)
                     leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
                 //if(swapSpeakerIndex != stepIndex - 1)
                 //{
@@ -232,7 +234,7 @@ public class PanelManager : MonoBehaviour, IManager
             }
             else
             {
-                if(bStopRightAnim)
+                if(bStopRightAnim || bStopLeftAnim)
                     rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
                 //if (swapSpeakerIndex != stepIndex - 1)
                 //{
@@ -250,6 +252,7 @@ public class PanelManager : MonoBehaviour, IManager
                 // STARTS next dialogue
                 //Debug.Log(string.Format("Before Configure... StepIndex - 1 {0} is set to {1}", stepIndex - 1, currentEvent.dialogues[stepIndex].bMultiLines));
 
+                Debug.Log("MultiLines = " + currentEvent.dialogues[stepIndex - 1].bMultiLines + " Step Index " + (stepIndex - 1));
                 if (!currentEvent.dialogues[stepIndex - 1].bMultiLines)
                 {
                     bLeftCharacterTalkingIsNext = !bLeftCharacterTalkingIsNext;
@@ -278,6 +281,8 @@ public class PanelManager : MonoBehaviour, IManager
             }
             
             // Wow, this actually fixed the coroutine bug i believe
+
+            // May need to do some more adjustments for other side
             if(bStopRightAnim || bStopLeftAnim)
                 bCanProceed = true;
 
@@ -313,5 +318,7 @@ public class PanelManager : MonoBehaviour, IManager
     {
         Debug.Log("FunctionCalled TEST");
         exitCoroutine = null;
+        stepIndex = 0;
+        bLeftCharacterTalkingIsNext = true;
     }
 }

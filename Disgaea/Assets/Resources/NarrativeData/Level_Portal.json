@@ -1,0 +1,22 @@
+// https://jsonformatter.curiousconcept.com/ // JSON checker for syntax
+// https://www.codeandweb.com/blog/2014/03/28/using-spritesheets-with-unity // texture packer pro
+
+{
+   "dialogues":
+   [
+      {
+         "characterType":15,
+         "name":"GateKeeper",
+         "atlasImageName":"MajinIcon",
+         "dialogueText":"This is the world portal",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":15,
+         "name":"GateKeeper",
+         "atlasImageName":"MajinIcon",
+         "dialogueText":"Please select a level",
+		 "bMultiLines" : false
+      }
+   ]
+}

@@ -1,0 +1,190 @@
+// https://jsonformatter.curiousconcept.com/ // JSON checker for syntax
+// https://www.codeandweb.com/blog/2014/03/28/using-spritesheets-with-unity // texture packer pro
+
+{
+   "dialogues":
+   [
+      {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"...What fool dares awaken me, the great Laharl?",
+		 "bMultiLines" : false
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Prince! I'm glad you're still alive.",
+		 "bMultiLines" : false
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Who said I was dead? I was just taking a nap.",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Anyways... Why are all those weapons behind you?",
+		 "bMultiLines" : false
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Well, I was having a hard time waking you up...",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Are you sure you weren't trying to kill me instead?",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"No... Ah... I mean, yes. I just wanted to wake you up.",
+		 "bMultiLines" : false
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Hmph... Whatever.",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"...so, what is it?",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"You better have a good reason for waking me up.",
+		 "bMultiLines" : false
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Oh, yeah.",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Big news. Your father, King Krichevskoy, has died.",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"He what...!? When!?",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Two years ago.",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"...wait a second.",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"So... you're telling me that I've been sleeping for over 2 years?",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Yup.",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"'Yup'...!? Why didn't you wake me up earlier!?",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Excuse me, but what do you think I've been doing all this time?",
+		 "bMultiLines" : true
+      },		  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"The Netherworld has gone to hell while you were sleeping.",
+		 "bMultiLines" : true
+      },	  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"It's not my fault if some other demon steals the title of Overlord.",
+		 "bMultiLines" : false
+      },		  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"What...? Have they forgotten whose title they are trying to steal!?",
+		 "bMultiLines" : true
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Hmhmhm...",
+		 "bMultiLines" : true
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"How bold of them! I shall show no mercy... for I am Laharl, the rightful heir to the throne!",
+		 "bMultiLines" : true
+      },	  
+	  {
+         "characterType":0,
+         "name":"Laharl",
+         "atlasImageName":"LaharlIcon",
+         "dialogueText":"Haaaahahahaha!!!!",
+		 "bMultiLines" : false
+      },	  
+	  {
+         "characterType":1,
+         "name":"Etna",
+         "atlasImageName":"EtnaIcon",
+         "dialogueText":"Your humble vassal, Etna, will accompany you.",
+		 "bMultiLines" : false
+      }		
+   ]
+}

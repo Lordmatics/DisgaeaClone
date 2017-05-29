@@ -1,0 +1,22 @@
+// https://jsonformatter.curiousconcept.com/ // JSON checker for syntax
+// https://www.codeandweb.com/blog/2014/03/28/using-spritesheets-with-unity // texture packer pro
+
+{
+   "dialogues":
+   [
+      {
+         "characterType":3,
+         "name":"Archer",
+         "atlasImageName":"ArcherIcon",
+         "dialogueText":"Welcome to the Disgaea Clone armour shop!",
+		 "bMultiLines" : true
+      },
+	  {
+         "characterType":3,
+         "name":"Archer",
+         "atlasImageName":"ArcherIcon",
+         "dialogueText":"Do go ahead and buy something.",
+		 "bMultiLines" : false
+      }
+   ]
+}
