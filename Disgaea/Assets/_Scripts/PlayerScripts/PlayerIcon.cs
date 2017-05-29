@@ -9,16 +9,16 @@ public class PlayerIcon : MonoBehaviour
     Grid grid;
     public float moveTimeIncrement;
 
-    public Coord iconCoOrds;
+    Coord iconCoOrds;
     Camera_Follow cam;
-    public int currentRotationValue;
-    int moveVal;
+    int currentRotationValue;
 
-    public bool wPressed;
-    public bool aPressed;
-    public bool sPressed;
-    public bool dPressed;
-    public Vector3 direction;
+    // these are pretty ugh and longwinded. but it all works fine.
+    bool wPressed;
+    bool aPressed;
+    bool sPressed;
+    bool dPressed;
+    Vector3 direction;
 
     private void Awake()
     {
@@ -26,18 +26,10 @@ public class PlayerIcon : MonoBehaviour
         grid = FindObjectOfType<Grid>();
     }
 
-    #region INPUT
-    #region PRESSED
-
-    void SetDirection()
-    {
-        Vector3 dir = GetDirection();
-        direction = dir;
-    }
-
-    Coroutine moveCoroutine;
+    Coroutine moveCoroutine; // used for conditioning to find the right time to stop and start it.
     void Move()
     {
+        // if the coroutine is null, Start the coroutine
         if (moveCoroutine == null)
         {
             moveCoroutine = StartCoroutine("MoveIcon");
@@ -45,55 +37,18 @@ public class PlayerIcon : MonoBehaviour
         }
     }
 
-    void WPressed()
-    {
-        if (!sPressed)
-            wPressed = true;
-        sPressed = false;
-        SetDirection();
-        Move();
-    }
-
-    void SPressed()
-    {
-        if(!wPressed)
-            sPressed = true;
-        wPressed = false;
-        SetDirection();
-        Move();
-    }
-
-    void APressed()
-    {
-        if (!dPressed)
-            aPressed = true;
-        dPressed = false;
-        SetDirection();
-        Move();
-    }
-
-    void DPressed()
-    {
-        if (!aPressed)
-            dPressed = true;
-        aPressed = false;
-        SetDirection();
-        Move();
-    }
-    #endregion
-    #region HELD
-    #endregion
-    #region RELEASED
     void MoveKeyReleased()
     {
-        Vector3 dir = GetDirection();
-        direction = dir;
-        Move();
+        SetDirection(); // set the direction for the player to move in.
+        Move(); //starts move coroutine if it is currently stopped.
     }
 
+    // returns a bool as the state of the coroutine is used to set-up movement.
     bool StopMoveCoroutine(bool bool01, bool bool02, bool bool03)
     {
-        if(!bool01 && !bool02 && !bool03 && moveCoroutine != null)
+        // input the 3 out of the 4 keyPress bools, the 1 that isn't input here is the actual keyRelease bool.
+        // null check the actual coroutine so i don't stop a coroutine somehow by it already being null;
+        if (!bool01 && !bool02 && !bool03 && moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
@@ -104,6 +59,8 @@ public class PlayerIcon : MonoBehaviour
 
     void StopMoveCoroutine(bool bool01, bool bool02)
     {
+        // if bool 1 and 2 ie "W & s" or "a & d".
+        // null check the actual coroutine so i don't stop a coroutine somehow by it already being null;
         if (!bool01 && !bool02 && moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
@@ -111,79 +68,14 @@ public class PlayerIcon : MonoBehaviour
         }
     }
 
-    void WReleased()
-    {
-        if (Input.GetKey(KeyCode.S))
-            sPressed = true;
-        if (wPressed == true || sPressed)
-        {
-            wPressed = false;
-            if(!StopMoveCoroutine(sPressed, aPressed, dPressed))
-            {
-                MoveKeyReleased();
-                return;
-            }
-        }
-        StopMoveCoroutine(aPressed, dPressed);
-    }
-
-    void SReleased()
-    {
-        if (Input.GetKey(KeyCode.W))
-            wPressed = true;
-        if (sPressed == true || wPressed)
-        {
-            sPressed = false;
-            if (!StopMoveCoroutine(wPressed, aPressed, dPressed))
-            {
-                MoveKeyReleased();
-                return;
-            }
-        }
-        StopMoveCoroutine(aPressed, dPressed);
-    }
-
-    void AReleased()
-    {
-        if (Input.GetKey(KeyCode.D))
-            dPressed = true;
-        if (aPressed == true || dPressed)
-        {
-            aPressed = false;
-            if (!StopMoveCoroutine(wPressed, sPressed, dPressed))
-            {
-                MoveKeyReleased();
-                return;
-            }
-        }
-        StopMoveCoroutine(wPressed, sPressed);
-    }
-
-    void DReleased()
-    {
-        if (Input.GetKey(KeyCode.A))
-            aPressed = true;
-        if (dPressed == true || aPressed)
-        {
-            dPressed = false;
-            if (!StopMoveCoroutine(wPressed, sPressed, aPressed))
-            {
-                MoveKeyReleased();
-                return;
-            }
-        }
-        StopMoveCoroutine(wPressed, sPressed);
-    }
-    #endregion
-    #endregion
-
+    // Coroutine that controls timing for icon movement.
     IEnumerator MoveIcon()
     {
-        SetPlayerPos();
+        SetPlayerPos(); // initial movement from the press.
         yield return new WaitForSeconds(moveTimeIncrement);
         while (wPressed || sPressed || aPressed || dPressed)
         {
-            SetPlayerPos();
+            SetPlayerPos(); // continuous movement;
             yield return new WaitForSeconds(moveTimeIncrement);
         }
         moveCoroutine = null;
@@ -191,27 +83,10 @@ public class PlayerIcon : MonoBehaviour
 
     void SetPlayerPos()
     {
-        /*
         Vector2 dir = new Vector2(direction.x, direction.z);
-        bool canMove = grid.InBorderCheck(iconCoOrds + dir);
-        if (canMove)
-        {
-            transform.position += direction;
-            iconCoOrds += dir;
-        }
-        else if(moveKeysPressed >= 2)
-        {
-            Vector2 canMoveSingle = grid.AlternateBorderCheck(iconCoOrds + dir, dir);
-            print(canMoveSingle);
-            if (canMoveSingle != dir && canMoveSingle != Vector2.zero)
-            {
-                transform.position += new Vector3(canMoveSingle.x, 0, canMoveSingle.y);
-                iconCoOrds += canMoveSingle;
-            }
-        }
-        */
-        Vector2 dir = new Vector2(direction.x, direction.z);
-        Vector2 canMoveSingle = grid.AlternateBorderCheck(iconCoOrds + dir, dir);
+        // currently checks to see if the new position is within the bound of the map.
+        // it won't move if it can't.
+        //currently while moving diagonally, it won't move in the direction it can, but whatever.
         if (grid.InBorderCheck(iconCoOrds + dir))
         {
             if (dir != Vector2.zero)
@@ -221,6 +96,158 @@ public class PlayerIcon : MonoBehaviour
             }
         }
     }
+
+    #region INPUT
+    #region PRESSED
+    void WPressed()
+    {
+        if (!sPressed) // only accept W input when S isn't already pressed.
+            wPressed = true;
+        sPressed = false; // removes S input if there was.
+        SetDirection(); // set the direction for the player to move in.
+        Move(); //starts move coroutine if it is currently stopped.
+    }
+
+    void SPressed()
+    {
+        if(!wPressed) // only accept S input when W isn't already pressed.
+            sPressed = true;
+        wPressed = false; // removes W input if there was.
+        SetDirection(); // set the direction for the player to move in.
+        Move(); //starts move coroutine if it is currently stopped.
+    }
+
+    void APressed()
+    {
+        if (!dPressed) // only accept A input when D isn't already pressed.
+            aPressed = true;
+        dPressed = false; // removes D input if there was.
+        SetDirection();// set the direction for the player to move in.
+        Move(); //starts move coroutine if it is currently stopped.
+    }
+
+    void DPressed()
+    {
+        if (!aPressed) // only accept D input when A isn't already pressed.
+            dPressed = true;
+        aPressed = false; // removes A input if there was.
+        SetDirection(); // set the direction for the player to move in.
+        Move(); //starts move coroutine if it is currently stopped.
+    }
+
+    public void QPressed()
+    {
+        currentRotationValue = Utility.ClampCycleInt(++currentRotationValue, 0, 3);
+        if (moveCoroutine != null)
+            direction = GetDirection();
+    }
+
+    public void EPressed()
+    {
+        currentRotationValue = Utility.ClampCycleInt(--currentRotationValue, 0, 3);
+        if (moveCoroutine != null)
+            direction = GetDirection();
+    }
+
+    public void LeftShiftPressed()
+    {
+        moveTimeIncrement /= 2f;
+    }
+    #endregion
+    #region HELD
+    #endregion
+    #region RELEASED
+    void WReleased()
+    {
+        // if S is held when W is released, set the movement to go in S direction.
+        if (Input.GetKey(KeyCode.S))
+            sPressed = true;
+        if (wPressed == true || sPressed) // will be true when S OR W is pressed/held.
+        {
+            wPressed = false;
+            // if it returns true, the method itself stops the coroutine.
+            // otherwise it keeps it running and sets up the movement.
+            if (!StopMoveCoroutine(sPressed, aPressed, dPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(aPressed, dPressed); // if A is not pressed AND D is not pressed, coroutine stops.
+    }
+
+    void SReleased()
+    {
+        // if W is held when S is released, set the movement to go in W direction.
+        if (Input.GetKey(KeyCode.W))
+            wPressed = true;
+        if (sPressed == true || wPressed) // will be true when S OR W is pressed/held.
+        {
+            sPressed = false;
+            // if it returns true, the method itself stops the coroutine.
+            // otherwise it keeps it running and sets up the movement.
+            if (!StopMoveCoroutine(wPressed, aPressed, dPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(aPressed, dPressed); // if A is not pressed AND D is not pressed, coroutine stops.
+    }
+
+    void AReleased()
+    {
+        // if D is held when A is released, set the movement to go in D direction.
+        if (Input.GetKey(KeyCode.D))
+            dPressed = true;
+        if (aPressed == true || dPressed) // will be true when D OR A is pressed/held.
+        {
+            aPressed = false;
+            // if it returns true, the method itself stops the coroutine.
+            // otherwise it keeps it running and sets up the movement.
+            if (!StopMoveCoroutine(wPressed, sPressed, dPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(wPressed, sPressed); // if A is not pressed AND D is not pressed, coroutine stops.
+    }
+
+    void DReleased()
+    {
+        // if A is held when D is released, set the movement to go in A direction.
+        if (Input.GetKey(KeyCode.A))
+            aPressed = true;
+        if (dPressed == true || aPressed) // will be true when D OR A is pressed/held.
+        {
+            dPressed = false;
+            // if it returns true, the method itself stops the coroutine.
+            // otherwise it keeps it running and sets up the movement.
+            if (!StopMoveCoroutine(wPressed, sPressed, aPressed))
+            {
+                MoveKeyReleased();
+                return;
+            }
+        }
+        StopMoveCoroutine(wPressed, sPressed); // if A is not pressed AND D is not pressed, coroutine stops.
+    }
+    
+    public void LeftShiftReleased()
+    {
+        moveTimeIncrement *= 2f;
+    }
+    #endregion
+    #endregion
+
+    void SetDirection()
+    {
+        // GetDirection() returns a Vector3 that determines what direction the player will move in.
+        // uses the KeyPressed bools to determine an int. 0-7 -> forward to right+forward (counter clockwise).
+        // it also takes into consideration of the camRotation. each turn adds 2 to that switch, and if the int goes over 7, -8 to keep the loop legit.
+        direction = GetDirection();
+    }
+
 
     int GetDirDifference(int dir)
     {
@@ -233,11 +260,9 @@ public class PlayerIcon : MonoBehaviour
 
     Vector3 GetDirection()
     {
-        int dir = GetDir();
-        print(dir);
-        if(dir != 9)
-            dir = GetDirDifference(dir);
-        print(dir);
+        int dir = GetDir(); // Grabs an index value for current input.
+        if(dir != 9) // basically this is here so that if GetDir() returns 9, no direction is given as it'll default to Vector3.zero.
+            dir = GetDirDifference(dir); // takes Cam Rotation into account.
         switch (dir)
         {
             case 0:
@@ -261,53 +286,35 @@ public class PlayerIcon : MonoBehaviour
         }
     }
 
-    int GetDir()
+    int GetDir() // depending on what keys pressed, returns an int.
     {
-        if (wPressed && !aPressed && !sPressed && !dPressed)
+        if (wPressed && !aPressed && !sPressed && !dPressed) // W pressed.
             return 0;
-        else if (wPressed && aPressed && !sPressed && !dPressed)
+        else if (wPressed && aPressed && !sPressed && !dPressed) // W & A Pressed
             return 1;
-        else if (!wPressed && aPressed && !sPressed && !dPressed)
+        else if (!wPressed && aPressed && !sPressed && !dPressed) // A Pressed
             return 2;
-        else if (!wPressed && aPressed && sPressed && !dPressed)
+        else if (!wPressed && aPressed && sPressed && !dPressed) // A & S Pressed
             return 3;
-        else if (!wPressed && !aPressed && sPressed && !dPressed)
+        else if (!wPressed && !aPressed && sPressed && !dPressed) // S Pressed
             return 4;
-        else if (!wPressed && !aPressed && sPressed && dPressed)
+        else if (!wPressed && !aPressed && sPressed && dPressed) // S & D Pressed
             return 5;
-        else if (!wPressed && !aPressed && !sPressed && dPressed)
+        else if (!wPressed && !aPressed && !sPressed && dPressed) // D Pressed
             return 6;
-        else if (wPressed && !aPressed && !sPressed && dPressed)
+        else if (wPressed && !aPressed && !sPressed && dPressed) // D & W Pressed
             return 7;
         else
-            return 9;
-    }
-
-    public void QPressed()
-    {
-        currentRotationValue = Utility.ClampCycleInt(++currentRotationValue, 0, 3);
-        if(moveCoroutine != null)
-            direction = GetDirection();
-    }
-
-    public void EPressed()
-    {
-        currentRotationValue = Utility.ClampCycleInt(--currentRotationValue, 0, 3);
-        if (moveCoroutine != null)
-            direction = GetDirection();
-    }
-
-    public void LeftShiftPressed()
-    {
-        moveTimeIncrement /= 2f;
-    }
-
-    public void LeftShiftReleased()
-    {
-        moveTimeIncrement *= 2f;
+            return 9; // no input. this can be called i think, but only when 
     }
 
     private void OnEnable()
+    {
+        // will add jobpad functionality, so it'll not run this/disable them.
+        EnableKeyboardInput();
+    }
+
+    void EnableKeyboardInput()
     {
         InputManager.wPressed += WPressed;
         InputManager.sPressed += SPressed;
@@ -325,6 +332,11 @@ public class PlayerIcon : MonoBehaviour
     }
 
     private void OnDisable()
+    {
+        DisableKeyboardInput();
+    }
+
+    void DisableKeyboardInput()
     {
         InputManager.wPressed -= WPressed;
         InputManager.sPressed -= SPressed;

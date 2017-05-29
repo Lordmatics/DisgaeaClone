@@ -157,41 +157,5 @@ public class Grid : MonoBehaviour
         }
         return false;
     }
-
-    public Vector2 AlternateBorderCheck(Coord check, Vector2 dir)
-    {
-        print(check.x +"_"+ check.z);
-        int gridRadius = (((int)currentMap.gridWorldSize.x - 1) / 2);
-        /*
-        if (check.x <= gridRadius && // if x is within the bounds by z isn't.
-            check.x >= -gridRadius &&
-            check.z > gridRadius ||
-            check.x <= gridRadius && // if x is within the bounds by z isn't.
-            check.x >= -gridRadius &&
-            check.z < -gridRadius)
-        {
-            return new Vector2(1 * Mathf.Sign(check.x), 0);
-        }
-        else if (check.z <= gridRadius && // if z is within the bounds by x isn't.
-                 check.z >= -gridRadius &&
-                 check.x > gridRadius ||
-                 check.z <= gridRadius && // if z is within the bounds by x isn't.
-                 check.z >= -gridRadius &&
-                 check.x < -gridRadius)
-        {
-            return new Vector2(0, 1 * Mathf.Sign(check.x));
-        }*/
-        if(check.x <= gridRadius && check.x >= -gridRadius)
-        {
-            if (check.z > gridRadius || check.z < gridRadius)
-                return new Vector2(1 * Mathf.Sign(dir.x), 0);
-        }
-        else if (check.z <= gridRadius && check.z >= -gridRadius)
-        {
-            if (check.x > gridRadius || check.x < gridRadius)
-                return new Vector2(0, 1 * Mathf.Sign(dir.y));
-        }
-        return Vector2.zero;
-    }
 }
 
