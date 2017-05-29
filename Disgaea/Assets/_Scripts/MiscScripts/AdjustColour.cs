@@ -4,6 +4,8 @@ using System.Collections;
 [AddComponentMenu("Scripts/MiscScripts/AdjustColour")]
 public class AdjustColour : MonoBehaviour {
 
+    [Range(0f, 1f)]
+    public float alpha;
     public float timeToChangeColour;
     public enum StartColour
     {
@@ -15,7 +17,7 @@ public class AdjustColour : MonoBehaviour {
         Purple,
     }
     public StartColour startColour;
-    MeshRenderer meshRenderer;
+    public MeshRenderer meshRenderer;
     int indexer;
     public bool increasing;
     bool adjustIndex;
@@ -104,17 +106,17 @@ public class AdjustColour : MonoBehaviour {
         switch (indexer)
         {
             case 0:
-                return new Color(1, 0, 0, 0.5f);
+                return new Color(1, 0, 0, alpha);
             case 1:
-                return new Color(1, 1, 0, 0.5f);
+                return new Color(1, 1, 0, alpha);
             case 2:
-                return new Color(0, 1, 0, 0.5f);
+                return new Color(0, 1, 0, alpha);
             case 3:
-                return new Color(0, 1, 1, 0.5f);
+                return new Color(0, 1, 1, alpha);
             case 4:
-                return new Color(0, 0, 1, 0.5f);
+                return new Color(0, 0, 1, alpha);
             case 5:
-                return new Color(1, 0, 1, 0.5f);
+                return new Color(1, 0, 1, alpha);
         }
         return Color.red;
     }

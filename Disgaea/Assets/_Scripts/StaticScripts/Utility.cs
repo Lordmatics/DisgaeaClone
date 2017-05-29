@@ -5,7 +5,7 @@ using System;
 
 public static class Utility
 {
-    public static Transform ShootRaycastTransform(Vector3 origin, Vector3 direction, int rayLength, LayerMask layermask) // all purpose single raycast method that either returns null or returns the hit object;
+    public static Transform ShootRaycastTransform(Vector3 origin, Vector3 direction, float rayLength, LayerMask layermask) // all purpose single raycast method that either returns null or returns the hit object;
     {
         RaycastHit hit;
         Physics.Raycast(origin, direction, out hit, rayLength, layermask);
@@ -20,11 +20,11 @@ public static class Utility
         }
     }
 
-    public static Vector3 ShootRaycastVector(Vector3 origin, Vector3 direction, int rayLength, LayerMask layermask) // all purpose single raycast method that either returns a Vector3.zero or returns the hit point world space vector;
+    public static Vector3 ShootRaycastVector(Vector3 origin, Vector3 direction, float rayLength, LayerMask layermask) // all purpose single raycast method that either returns a Vector3.zero or returns the hit point world space vector;
     {
         RaycastHit hit;
         Physics.Raycast(origin, direction, out hit, rayLength, layermask);
-        Debug.DrawRay(origin, direction * rayLength, Color.red, 5);
+        //Debug.DrawRay(origin, direction * rayLength, Color.red, 5);
         if (hit.transform != null)
         {
             return hit.point;

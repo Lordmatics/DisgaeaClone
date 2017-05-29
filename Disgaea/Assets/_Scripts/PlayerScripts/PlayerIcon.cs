@@ -11,6 +11,8 @@ public class PlayerIcon : MonoBehaviour
 
     Coord iconCoOrds;
     Camera_Follow cam;
+    SpriteRenderer rend_01;
+
     int currentRotationValue;
 
     // these are pretty ugh and longwinded. but it all works fine.
@@ -24,6 +26,7 @@ public class PlayerIcon : MonoBehaviour
     {
         cam = FindObjectOfType<Camera_Follow>();
         grid = FindObjectOfType<Grid>();
+        rend_01 = transform.GetChild(0).GetComponent<SpriteRenderer>();
     }
 
     Coroutine moveCoroutine; // used for conditioning to find the right time to stop and start it.
@@ -308,10 +311,16 @@ public class PlayerIcon : MonoBehaviour
             return 9; // no input. this can be called i think, but only when 
     }
 
+    void AdjustSpriteColour(Color colour)
+    {
+        rend_01.color = colour;
+    }
+
     private void OnEnable()
     {
         // will add jobpad functionality, so it'll not run this/disable them.
         EnableKeyboardInput();
+        PlayerIconCube.adjustColour += AdjustSpriteColour;
     }
 
     void EnableKeyboardInput()
@@ -334,6 +343,7 @@ public class PlayerIcon : MonoBehaviour
     private void OnDisable()
     {
         DisableKeyboardInput();
+        PlayerIconCube.adjustColour -= AdjustSpriteColour;
     }
 
     void DisableKeyboardInput()
