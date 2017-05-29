@@ -36,8 +36,8 @@ public class PanelManager : MonoBehaviour, IManager
         leftPanel = GameObject.Find("LeftCharacterPanel").GetComponent<PanelConfig>();
         rightPanel = GameObject.Find("RightCharacterPanel").GetComponent<PanelConfig>();
         // Stores reference to conversation
-        currentEvent = JSONAssembly.RunJSONFactoryForIndex("TestThree");
-        InitializePanels();
+        //currentEvent = JSONAssembly.RunJSONFactoryForIndex("TestThree");
+        //InitializePanels("TestThree");
         //currentState = ManagerState.Completed;
 
 
@@ -68,8 +68,11 @@ public class PanelManager : MonoBehaviour, IManager
         InputManager.spacePressed -= SpacePressed;
     }
 
-    private void InitializePanels()
+    public void InitializePanels(string conversationStringFromJSONFactory)
     {
+
+        currentEvent = JSONAssembly.RunJSONFactoryForIndex(conversationStringFromJSONFactory);
+
         leftPanel.bCharacterTalking = true;
         rightPanel.bCharacterTalking = false;
 
@@ -88,6 +91,7 @@ public class PanelManager : MonoBehaviour, IManager
                 break;
 
             }
+            // Add code to set default image template it nothing, if its a one man conversation
         }
         // Might wanna add something, to initialise right panel to "placeholder" in the
         // Event the conversation is simply one person only

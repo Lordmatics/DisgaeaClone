@@ -12,12 +12,20 @@ public class Player : MonoBehaviour
         movement = GetComponent<PlayerOverWorldMovement>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if(movement)
+        if (movement)
         {
             movement.PlayerMovement();
         }
+    }
+
+    private void FixedUpdate()
+    {
+        //if(movement)
+        //{
+        //    movement.PlayerMovement();
+        //}
     }
 
 
