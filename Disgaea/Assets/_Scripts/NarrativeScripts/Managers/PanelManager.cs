@@ -71,11 +71,22 @@ public class PanelManager : MonoBehaviour, IManager
     {
         InputManager.spacePressed -= SpacePressed;
         OnConversationEnd -= DummyFunction;
+        OnConversationEnd -= StoredOnEnd;
     }
 
-    public void BeginConversationLoadAt(string conversationStringFromJSONFactory)
-    {
+    // Various possible function that gets passed in when starting a conversation
+    // to be called when the conversation ends
+    Action StoredOnEnd;
 
+    public void BeginConversationLoadAt(string conversationStringFromJSONFactory, Action del = null)
+    {
+        Debug.Log("Conversation Started");
+        if(del != null)
+        {
+            OnConversationEnd -= StoredOnEnd;
+            StoredOnEnd = del;
+            OnConversationEnd += StoredOnEnd;
+        }
         stepIndex = 0;
         leftPanel.dialogueText.text = "";
         rightPanel.dialogueText.text = "";
@@ -148,14 +159,29 @@ public class PanelManager : MonoBehaviour, IManager
     int swapSpeakerIndex = 0;
     [SerializeField]
     bool bCanProceed = false;
+
+    Coroutine exitCoroutine;
+
     // occurs on player input - Space pressed
+
+    // NEED TO FORCE A WAIT IN HERE
+    // TO LET THE ANIMATE TEXT COROUTINE BEGIN
+    // BEFORE TRYING TO SKIP IT
+    // SINCE IF U PRESS SPACE BEFORE IT STARTS IT WILL
+    // FULLY PRINT, THEN START ANIMATING FROM SCRATCH
+
+    bool bStopLeftAnim;
+    bool bStopRightAnim;
+
     public void UpdatePanelState()
     {
         // There is a bug, with the animate text if press space before its finished
 
         if (bDisableInput) return;
-        leftPanel.StopAnimatingText();
-        rightPanel.StopAnimatingText();
+
+        bStopLeftAnim = leftPanel.StopAnimatingText();
+        bStopRightAnim = rightPanel.StopAnimatingText();
+
 
         // As long as the current index in dialogue
         // Is within bounds
@@ -197,7 +223,8 @@ public class PanelManager : MonoBehaviour, IManager
 
             if (bLeftCharacterTalkingIsNext)
             {
-                leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+                if(bStopLeftAnim)
+                    leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
                 //if(swapSpeakerIndex != stepIndex - 1)
                 //{
                 //    bLeftCharacterTalking = !bLeftCharacterTalking;
@@ -205,7 +232,8 @@ public class PanelManager : MonoBehaviour, IManager
             }
             else
             {
-                rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
+                if(bStopRightAnim)
+                    rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
                 //if (swapSpeakerIndex != stepIndex - 1)
                 //{
                 //    bLeftCharacterTalking = !bLeftCharacterTalking;
@@ -248,8 +276,10 @@ public class PanelManager : MonoBehaviour, IManager
                 return;
 
             }
-
-            bCanProceed = true;
+            
+            // Wow, this actually fixed the coroutine bug i believe
+            if(bStopRightAnim || bStopLeftAnim)
+                bCanProceed = true;
 
         }
         else
@@ -257,7 +287,8 @@ public class PanelManager : MonoBehaviour, IManager
             if (stepIndex > currentEvent.dialogues.Count)
             {
                 // Animation to end the conversation
-                StartCoroutine(MasterManager.animationManager.ExitConversationAnimation(OnConversationEnd));
+                if(exitCoroutine == null)
+                    exitCoroutine = StartCoroutine(MasterManager.animationManager.ExitConversationAnimation(OnConversationEnd));
                 return;
             }
             
@@ -276,8 +307,11 @@ public class PanelManager : MonoBehaviour, IManager
         }
     }
 
+    // THERE IS A BUG HERE SOMEWHERE -
+    // FUNCTION GETS CALLED MULTIPLE TIMES OCCASIONALLY
     public void DummyFunction()
     {
         Debug.Log("FunctionCalled TEST");
+        exitCoroutine = null;
     }
 }

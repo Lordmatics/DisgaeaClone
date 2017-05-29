@@ -32,7 +32,7 @@ public class PlayerTriggerCone : MonoBehaviour
         if (other.GetComponent<IInteractable>() != null)
         {
             Debug.Log("Exit" + other.gameObject.name);
-            currentTarget = null;
+            //currentTarget = null;
         }
     }
 
@@ -41,7 +41,13 @@ public class PlayerTriggerCone : MonoBehaviour
         if(currentTarget != null)
         {
             currentTarget.OnInteract();
-        }     
+            Debug.Log("FPRESSED not null");
+        }
+        else
+        {
+            //Debug.Log("FPRESSED null");
+
+        }
     }
 
     private void OnEnable()

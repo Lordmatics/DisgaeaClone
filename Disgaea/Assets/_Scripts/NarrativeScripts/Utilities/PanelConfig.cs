@@ -44,17 +44,20 @@ public class PanelConfig : MonoBehaviour
 
     private Coroutine animateTextCoroutine;
 
-    public void StopAnimatingText()
+    public bool StopAnimatingText()
     {
         if (animateTextCoroutine != null)
         {
             StopCoroutine(animateTextCoroutine);
             animateTextCoroutine = null;
+            return true;
         }
+        return false;
     }
 
     public void ShowCompleteDialogue(Dialogue currentDialogue)
     {
+        StopAnimatingText();
         dialogueText.text = currentDialogue.dialogueText;
     }
 
