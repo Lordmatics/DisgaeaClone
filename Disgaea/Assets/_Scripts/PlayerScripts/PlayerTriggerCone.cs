@@ -8,19 +8,26 @@ public class PlayerTriggerCone : MonoBehaviour
     [SerializeField]
     IInteractable currentTarget;
 
+    // Fix for hide preview on exit, when at the same time a new curretn target was selected - requiring show preview
+    private int targetCount = 0;
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject != gameObject)
         {
+
             currentTarget = other.GetComponent<IInteractable>();
             if (currentTarget != null)
             {
+                targetCount++;
+                currentTarget.ShowPreview();
                 Debug.Log("Enter" + other.gameObject.name);
             }
         }
 
     }
 
+    // Optional 
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject != gameObject)
@@ -28,22 +35,26 @@ public class PlayerTriggerCone : MonoBehaviour
             currentTarget = other.GetComponent<IInteractable>();
             if (currentTarget != null)
             {
-                //Debug.Log("Stay" + other.gameObject.name);
             }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //if (other.gameObject != gameObject)
-        //{
+        if (other.gameObject != gameObject)
+        {
             // Make sure this only fires when you leave the right trigger
-            if (other.GetComponent<IInteractable>() != null)
+            IInteractable temp = other.GetComponent<IInteractable>();
+            if (temp != null)
             {
+                targetCount--;
+                if(targetCount <= 0)
+                    temp.HidePreview();
                 Debug.Log("Exit" + other.gameObject.name);
+
                 currentTarget = null;
             }
-        //}
+        }
     }
 
     void FPressed()

@@ -19,4 +19,9 @@ public static class ExtensionMethods
     {
         eulerAng = new Vector3(eulerAng.x, eulerAng.y + val, eulerAng.z);
     }
+
+    public static void ResetToOrigin(this RectTransform trans)
+    {
+        trans.anchoredPosition = Vector3.zero;
+    }
 }
