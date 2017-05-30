@@ -24,6 +24,10 @@ public class PlayerOverWorldMovement : MonoBehaviour
 
     public void PlayerMovement()
     {
+        if(PlayerTriggerCone.bPreventMovement)
+        {
+            return;
+        }
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 

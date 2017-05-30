@@ -28,7 +28,7 @@ public class PanelManager : MonoBehaviour, IManager
     [HideInInspector]
     public float customWait = 1.5f;         // HardCoded Time to wait, before input is allowed
 
-    Action OnConversationEnd;
+    public static Action OnConversationEnd;
     // Various possible function that gets passed in when starting a conversation
     // to be called when the conversation ends
     Action StoredOnEnd;
@@ -39,6 +39,9 @@ public class PanelManager : MonoBehaviour, IManager
     bool bCanProceed = false;
 
     Coroutine exitCoroutine;
+
+    public delegate void OnConversationStart();
+    public static event OnConversationStart OnEnterConversation;
 
     // occurs on player input - Space pressed
 
@@ -91,6 +94,10 @@ public class PanelManager : MonoBehaviour, IManager
     // For example, open up the weapon shop
     public void BeginConversationLoadAt(string conversationStringFromJSONFactory, Action del = null)
     {
+        if(OnEnterConversation != null)
+        {
+            OnEnterConversation();
+        }
         // If optional function has been passed in
         if(del != null)
         {

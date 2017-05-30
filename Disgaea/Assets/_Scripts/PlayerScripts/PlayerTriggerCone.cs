@@ -60,11 +60,26 @@ public class PlayerTriggerCone : MonoBehaviour
         }
     }
 
+    public static bool bPreventMovement = false;
+
+    void PreventMovement()
+    {
+        bPreventMovement = true;
+    }
+
+    void EnableMovement()
+    {
+        bPreventMovement = false;
+    }
+
     private void OnEnable()
     {
         InputManager.fPressed += FPressed;
         InputManager.qPressed += QPressed;
         InputManager.ePressed += EPressed;
+        PanelManager.OnEnterConversation += PreventMovement;
+        PanelManager.OnConversationEnd += EnableMovement;
+        
     }
 
     private void OnDisable()
@@ -72,6 +87,8 @@ public class PlayerTriggerCone : MonoBehaviour
         InputManager.fPressed -= FPressed;
         InputManager.qPressed -= QPressed;
         InputManager.ePressed -= EPressed;
+        PanelManager.OnEnterConversation -= PreventMovement;
+        PanelManager.OnConversationEnd -= EnableMovement;
     }
 
     int currentRotationValue;
