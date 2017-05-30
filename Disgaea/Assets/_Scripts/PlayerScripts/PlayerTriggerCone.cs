@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshCollider))]
 public class PlayerTriggerCone : MonoBehaviour
 {
 
     [SerializeField]
     IInteractable currentTarget;
+
+    MeshCollider col;
 
     // Fix for hide preview on exit, when at the same time a new curretn target was selected - requiring show preview
     private int targetCount = 0;
@@ -148,4 +151,12 @@ public class PlayerTriggerCone : MonoBehaviour
                 return;
         }
     }
+
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.green;
+    //    col = GetComponent<MeshCollider>();
+    //    Gizmos.DrawCube(col.bounds.center, col.bounds.size);
+
+    //}
 }
