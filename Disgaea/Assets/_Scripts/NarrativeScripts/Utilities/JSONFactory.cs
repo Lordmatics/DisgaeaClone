@@ -6,14 +6,13 @@ using System.IO; // Read Write
 using LitJson; // Custom JSON library dll
 
 // List of JSON file with path extensions
-// Only NarrativeManager should be able to use this script
-// Take in scene number, output Narrative Event - Black Box
 // Validation and Exception handling
 
 namespace JSONFactory
 {
     class JSONAssembly
     {
+        // Look up Dictionary - Extensible for any JSON purposes
         private static Dictionary<string, string> _resourceList = new Dictionary<string, string>
         {
             {"TestOne", "/Resources/NarrativeData/DataTest.json" },
@@ -30,9 +29,11 @@ namespace JSONFactory
 
         };
 
+        // Load the conversation at a given dictionary key
+        // + Validity checks
         public static NarrativeEvent RunJSONFactoryForIndex(string dictionaryIndex)
         {
-            string resourcePath = PathForScene(dictionaryIndex);
+            string resourcePath = PathForData(dictionaryIndex);
 
             if(IsValidJSON(resourcePath) == true)
             {
@@ -46,7 +47,8 @@ namespace JSONFactory
             }
         }
 
-        private static string PathForScene(string dictionaryIndex)
+        // Validity check on the dictionary look up
+        private static string PathForData(string dictionaryIndex)
         {
             string resourcePathResult;
             if(_resourceList.TryGetValue(dictionaryIndex, out resourcePathResult))
@@ -56,10 +58,11 @@ namespace JSONFactory
             else
             {
                 //return "Failed";
-                throw new Exception("The scene number you provided is not in the resource list. Please check the JSONFactory namespace");
+                throw new Exception("The look up key you provided is not in the resource list. Please check the JSONFactory namespace");
             }
         }
 
+        // Validity check for json file extension
         private static bool IsValidJSON(string path)
         {
             return (Path.GetExtension(path) == ".json") ? true : false;

@@ -14,148 +14,24 @@ public class PanelManager : MonoBehaviour, IManager
 {
     public ManagerState currentState { get; private set; }
 
-    private PanelConfig leftPanel;
+    private PanelConfig leftPanel;          // Ref to Left Panel - Set  in BootSequence
+    private PanelConfig rightPanel;         // Ref to Right Panel - Set  in BootSequence
 
-    private PanelConfig rightPanel;
+    private NarrativeEvent currentEvent;    // Ref to whole conversation from JSONFactory
 
-    private NarrativeEvent currentEvent;
+    private bool bLeftCharacterTalkingIsNext = true;    // Bool to determine who is next to speak
 
-    private bool bLeftCharacterTalkingIsNext = true;
+    private int stepIndex = 0;              // Index to step through the conversation array
 
-    [SerializeField]
-    private int stepIndex = 0;
-
-    bool bDisableInput = true;
+    bool bDisableInput = true;              // Bool to prohibit input at certain times - Only Conversation Input
 
     [HideInInspector]
-    public float customWait = 1.5f;
-
-    public void BootSequence()
-    {
-        //Debug.Log(string.Format("{0} is booting up", GetType().Name));
-
-        leftPanel = GameObject.Find("LeftCharacterPanel").GetComponent<PanelConfig>();
-        rightPanel = GameObject.Find("RightCharacterPanel").GetComponent<PanelConfig>();
-        // Stores reference to conversation
-        //currentEvent = JSONAssembly.RunJSONFactoryForIndex("TestThree");
-        //InitializePanels("TestThree");
-        //currentState = ManagerState.Completed;
-
-
-        //for (int i = 0; i < currentEvent.dialogues.Count; i++)
-        //{
-        //    Debug.Log(string.Format("Image {0} : Multi {1} : Char {2} : Name {3} : Dialogue {4}", currentEvent.dialogues[i].atlasImageName
-        //        , currentEvent.dialogues[i].bMultiLines
-        //        , currentEvent.dialogues[i].characterType
-        //        , currentEvent.dialogues[i].name
-        //        , currentEvent.dialogues[i].dialogueText));
-        //}
-        //Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
-    }
-
-    // Used to advance the dialogue
-    void SpacePressed()
-    {
-        UpdatePanelState();
-    }
+    public float customWait = 1.5f;         // HardCoded Time to wait, before input is allowed
 
     Action OnConversationEnd;
-
-    private void OnEnable()
-    {
-        InputManager.spacePressed += SpacePressed;
-        OnConversationEnd += DummyFunction;
-    }
-
-    private void OnDisable()
-    {
-        InputManager.spacePressed -= SpacePressed;
-        OnConversationEnd -= DummyFunction;
-        OnConversationEnd -= StoredOnEnd;
-    }
-
     // Various possible function that gets passed in when starting a conversation
     // to be called when the conversation ends
     Action StoredOnEnd;
-
-    public void BeginConversationLoadAt(string conversationStringFromJSONFactory, Action del = null)
-    {
-        Debug.Log("Conversation Started");
-        if(del != null)
-        {
-            OnConversationEnd -= StoredOnEnd;
-            StoredOnEnd = del;
-            OnConversationEnd += StoredOnEnd;
-        }
-        stepIndex = 0;
-        leftPanel.dialogueText.text = "";
-        rightPanel.dialogueText.text = "";
-        bStopLeftAnim = false;
-        bStopRightAnim = false;
-
-        currentEvent = JSONAssembly.RunJSONFactoryForIndex(conversationStringFromJSONFactory);
-
-        leftPanel.bCharacterTalking = true;
-        rightPanel.bCharacterTalking = false;
-
-        // This assumes left person only has one dialogue entry before next person
-        //bLeftCharacterTalking = !bLeftCharacterTalking;
-
-
-        leftPanel.Configure(currentEvent.dialogues[stepIndex], true, customWait);
-        for (int i = 0; i < currentEvent.dialogues.Count; i++)
-        {
-            if(currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
-            {
-                // Iterate over the conversation and assign the second panel
-                // to an image that isnt the first users panel
-                rightPanel.Configure(currentEvent.dialogues[i]);
-                break;
-
-            }
-            // Add code to set default image template it nothing, if its a one man conversation
-            rightPanel.Configure(true);
-        }
-        // Might wanna add something, to initialise right panel to "placeholder" in the
-        // Event the conversation is simply one person only
-
-        //rightPanel.Configure(currentEvent.dialogues[stepIndex + 1]);
-
-        // Animation to begin the conversation
-        StartCoroutine(MasterManager.animationManager.EnterConversationAnimation());
-        StartCoroutine(CustomWait());
-
-        // Index to increment through the dialogue
-        stepIndex++;
-    }
-
-    private IEnumerator CustomWait()
-    {
-        yield return new WaitForSeconds(customWait);
-        bDisableInput = false;
-    }
-
-    private void ConfigurePanels()
-    {
-        //bTestBool = currentEvent.dialogues[stepIndex].bMultiLines;
-
-        if (bLeftCharacterTalkingIsNext)
-        {
-            leftPanel.bCharacterTalking = true;
-            rightPanel.bCharacterTalking = false;
-
-            leftPanel.Configure(currentEvent.dialogues[stepIndex]);
-            rightPanel.ToggleCharacterMask();
-        }
-        else
-        {
-            leftPanel.bCharacterTalking = false;
-            rightPanel.bCharacterTalking = true;
-
-            leftPanel.ToggleCharacterMask();
-            rightPanel.Configure(currentEvent.dialogues[stepIndex]);
-        }
-    }
 
     [SerializeField]
     int swapSpeakerIndex = 0;
@@ -175,20 +51,122 @@ public class PanelManager : MonoBehaviour, IManager
     bool bStopLeftAnim;
     bool bStopRightAnim;
 
+    private void OnEnable()
+    {
+        InputManager.spacePressed += SpacePressed;
+        OnConversationEnd += EndOfConversationReset;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.spacePressed -= SpacePressed;
+        OnConversationEnd -= EndOfConversationReset;
+        OnConversationEnd -= StoredOnEnd;
+    }
+
+    public void BootSequence()
+    {
+        //Debug.Log(string.Format("{0} is booting up", GetType().Name));
+
+        leftPanel = GameObject.Find("LeftCharacterPanel").GetComponent<PanelConfig>();
+        rightPanel = GameObject.Find("RightCharacterPanel").GetComponent<PanelConfig>();
+    }
+
+
+
+    void ResetConversationConditions()
+    {
+        stepIndex = 0;
+        leftPanel.dialogueText.text = "";
+        rightPanel.dialogueText.text = "";
+        bStopLeftAnim = false;
+        bStopRightAnim = false;
+        leftPanel.bCharacterTalking = true;
+        rightPanel.bCharacterTalking = false;
+    }
+
+    // Initiates a conversation by loading it from json with a string
+    // The Action parameter is specific to who is calling the function
+    // As that passed in function will run once the conversation has finished
+    // For example, open up the weapon shop
+    public void BeginConversationLoadAt(string conversationStringFromJSONFactory, Action del = null)
+    {
+        // If optional function has been passed in
+        if(del != null)
+        {
+            // Reset the delegate
+            OnConversationEnd -= StoredOnEnd;
+            // Cache the parameter function
+            StoredOnEnd = del;
+            // add the cache to our end of conversation delegate
+            OnConversationEnd += StoredOnEnd;
+        }
+
+        // Make sure the conversation is starting from the beginning
+        // With appropriate resets
+        ResetConversationConditions();
+
+        // Assign the current conversation with the one loaded from the string parameter
+        currentEvent = JSONAssembly.RunJSONFactoryForIndex(conversationStringFromJSONFactory);
+
+        // Configure the Left starting panel, with the appropriate conversation dialogue
+        // This first configuration requires a delay
+        // To match the animation
+        leftPanel.Configure(currentEvent.dialogues[stepIndex], true, customWait);
+
+        // Configure Right Panel - conditions for if there is only one speaker take place here
+        for (int i = 0; i < currentEvent.dialogues.Count; i++)
+        {
+            if(currentEvent.dialogues[i].atlasImageName != currentEvent.dialogues[stepIndex].atlasImageName)
+            {
+                // Iterate over the conversation and assign the second panel
+                // to an image that isnt the first users panel
+                rightPanel.Configure(currentEvent.dialogues[i]);
+                break;
+
+            }
+            // Add code to set default image template it nothing, if its a one man conversation
+            rightPanel.Configure(true);
+        }
+
+        // Animation to begin the conversation
+        // Custom wait simply prohibits input whilst the animation is occuring
+        StartCoroutine(MasterManager.animationManager.EnterConversationAnimation());
+        StartCoroutine(CustomWait());
+
+        // Index to increment through the dialogue
+        stepIndex++;
+    }
+
+    private IEnumerator CustomWait()
+    {
+        yield return new WaitForSeconds(customWait);
+        bDisableInput = false;
+    }
+
+    // Used to advance the dialogue
+    void SpacePressed()
+    {
+        UpdatePanelState();
+    }
+
     public void UpdatePanelState()
     {
-        // There is a bug, with the animate text if press space before its finished
-
+        // If spamming space whilst animation is happenning...
+        // Nothing will break
         if (bDisableInput) return;
 
+        // Cache reference to, whether or not the ending of the animation was successful
+        // Required to prevent a wierd bug conflicting with show full text
+        // And continuation of animation
         bStopLeftAnim = leftPanel.StopAnimatingText();
         bStopRightAnim = rightPanel.StopAnimatingText();
-
 
         // As long as the current index in dialogue
         // Is within bounds
         if (stepIndex < currentEvent.dialogues.Count)
         {
+            // First attempt that didn't work - can reflect on this
             #region _CODE_
             //if(!bCanProceed)
             //{
@@ -221,74 +199,61 @@ public class PanelManager : MonoBehaviour, IManager
             //}
 #endregion
         
-            // Reveal whole sentence
-
+            // Reveal whole sentence - Assuming there is no animating text
+            // Occuring at this time
             if (bLeftCharacterTalkingIsNext)
             {
                 if(bStopLeftAnim || bStopRightAnim)
                     leftPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
-                //if(swapSpeakerIndex != stepIndex - 1)
-                //{
-                //    bLeftCharacterTalking = !bLeftCharacterTalking;
-                //}
             }
             else
             {
                 if(bStopRightAnim || bStopLeftAnim)
                     rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
-                //if (swapSpeakerIndex != stepIndex - 1)
-                //{
-                //    bLeftCharacterTalking = !bLeftCharacterTalking;
-                //}
             }
-            //}
 
-
+            // If the text is fully shown or the animation was cut short, this will be true
+            // This section, enables the continuation of the conversation
             if (bCanProceed)
             {
+                // set this to false immediately, since once this full text has been shown,
+                // we need to prep it to be ready for animating the next line +
+                // subsequently wait till bProceed is true again
                 bCanProceed = false;
-                //bCanProceed = false;
-                //bCanProceed = false;
-                // STARTS next dialogue
-                //Debug.Log(string.Format("Before Configure... StepIndex - 1 {0} is set to {1}", stepIndex - 1, currentEvent.dialogues[stepIndex].bMultiLines));
 
-                Debug.Log("MultiLines = " + currentEvent.dialogues[stepIndex - 1].bMultiLines + " Step Index " + (stepIndex - 1));
+                // Since im implementing a left and right person narrative system
+                // It was important to determine whether, one spokesperson
+                // had multiple lines of dialgoue...
+                // If they simply have one line, then swap to the other spokesperson next
+                // If not, continue 
                 if (!currentEvent.dialogues[stepIndex - 1].bMultiLines)
                 {
                     bLeftCharacterTalkingIsNext = !bLeftCharacterTalkingIsNext;
                     
                 }
 
-                //Debug.Log(string.Format("Before Configure... StepIndex {0} is set to {1}", stepIndex, currentEvent.dialogues[stepIndex].bMultiLines));
+                // Update Sprite Data + Conversation text + Other misc info from Narrative Event
                 ConfigurePanels();
 
-                //if(!currentEvent.dialogues[stepIndex].bMultiLines)
-                //{
-                //    bLeftCharacterTalking = !bLeftCharacterTalking;
-                //}
-                // if the user is a different user at this index, swap
-                //if (swapSpeakerIndex == stepIndex)
-                //{
-                //    bLeftCharacterTalking = !bLeftCharacterTalking;
-                //}
-
-                //ConfigurePanels();
-
+                // Increment index, to proceed with conversation
                 stepIndex++;
 
+                // Early exit, since we can move on to next piece of dialogue
                 return;
 
-            }
-            
-            // Wow, this actually fixed the coroutine bug i believe
+            }          
 
-            // May need to do some more adjustments for other side
+            // May need to do some more adjustments for other side - Think its good now
+            // If there was a succesful stop of text animating - it means the text is fully visible
+            // Thus you are ready to proceed
             if(bStopRightAnim || bStopLeftAnim)
                 bCanProceed = true;
-
         }
         else
         {
+            // This segment will run, if you are on the last line / last line + 1, of the conversation
+
+            // This chunk relies on the step index to be one above the max number of lines in the conversation
             if (stepIndex > currentEvent.dialogues.Count)
             {
                 // Animation to end the conversation
@@ -297,6 +262,7 @@ public class PanelManager : MonoBehaviour, IManager
                 return;
             }
             
+            // Code to enable the sentence finisher functionality for this final use case specifically
             if (bLeftCharacterTalkingIsNext)
             {
                 if(stepIndex - 1 < currentEvent.dialogues.Count)
@@ -307,18 +273,47 @@ public class PanelManager : MonoBehaviour, IManager
                 if (stepIndex - 1 < currentEvent.dialogues.Count)
                     rightPanel.ShowCompleteDialogue(currentEvent.dialogues[stepIndex - 1]);
             }
+            // Increment index, to prep for ExitConversation animation
             stepIndex++;
+        }
+    }
 
+    // Left and Right Panel setup - Sprite + Data
+    private void ConfigurePanels()
+    {
+        // Depending on who is talking next
+        // Certain flags need to be set, within the Panel Config classes
+        if (bLeftCharacterTalkingIsNext)
+        {
+            leftPanel.bCharacterTalking = true;
+            rightPanel.bCharacterTalking = false;
+
+            // Loads sprite, dialogue text + extendable for anything else from narrative event
+            leftPanel.Configure(currentEvent.dialogues[stepIndex]);
+            // Swaps the highlight colour for the panel coming up next
+            rightPanel.ToggleCharacterMask();
+        }
+        else
+        {
+            leftPanel.bCharacterTalking = false;
+            rightPanel.bCharacterTalking = true;
+
+            // The toggle is required to keep each other panel flip flopping, based on current speaker
+            leftPanel.ToggleCharacterMask();
+            rightPanel.Configure(currentEvent.dialogues[stepIndex]);
         }
     }
 
     // THERE IS A BUG HERE SOMEWHERE -
     // FUNCTION GETS CALLED MULTIPLE TIMES OCCASIONALLY
-    public void DummyFunction()
+    // Think this is fixed now
+    public void EndOfConversationReset()
     {
         Debug.Log("FunctionCalled TEST");
         exitCoroutine = null;
         stepIndex = 0;
         bLeftCharacterTalkingIsNext = true;
+        // May need to set disable input to true here - After testing, this isnt required but logically it should be
+        bDisableInput = true;
     }
 }

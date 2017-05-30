@@ -10,30 +10,40 @@ public class PlayerTriggerCone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        currentTarget = other.GetComponent<IInteractable>();
-        if(currentTarget != null)
+        if(other.gameObject != gameObject)
         {
-            Debug.Log("Enter" + other.gameObject.name);
+            currentTarget = other.GetComponent<IInteractable>();
+            if (currentTarget != null)
+            {
+                Debug.Log("Enter" + other.gameObject.name);
+            }
         }
+
     }
 
     private void OnTriggerStay(Collider other)
     {
-        currentTarget = other.GetComponent<IInteractable>();
-        if (currentTarget != null)
+        if (other.gameObject != gameObject)
         {
-            //Debug.Log("Stay" + other.gameObject.name);
+            currentTarget = other.GetComponent<IInteractable>();
+            if (currentTarget != null)
+            {
+                //Debug.Log("Stay" + other.gameObject.name);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Make sure this only fires when you leave the right trigger
-        if (other.GetComponent<IInteractable>() != null)
-        {
-            Debug.Log("Exit" + other.gameObject.name);
-            currentTarget = null;
-        }
+        //if (other.gameObject != gameObject)
+        //{
+            // Make sure this only fires when you leave the right trigger
+            if (other.GetComponent<IInteractable>() != null)
+            {
+                Debug.Log("Exit" + other.gameObject.name);
+                currentTarget = null;
+            }
+        //}
     }
 
     void FPressed()

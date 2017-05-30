@@ -20,6 +20,7 @@ public class AnimationManager : MonoBehaviour, IManager
        // Debug.Log(string.Format("{0} status = {1}", GetType().Name, currentState));
     }
 
+    // Move panels up into screen space
     public IEnumerator EnterConversationAnimation()
     {
         AnimationTuple enterConversationAnim = Constants.AnimationTuples.introAnimation;
@@ -27,6 +28,9 @@ public class AnimationManager : MonoBehaviour, IManager
         yield return new WaitForSeconds(1.0f);
     }
 
+    // Move panels down out of screen space
+    // +
+    // callback a passed in function to activate once the panels are offscreen
     public IEnumerator ExitConversationAnimation(Action myFunction = null)
     {
         AnimationTuple exitConversationAnim = Constants.AnimationTuples.exitAnimation;

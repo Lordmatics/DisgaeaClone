@@ -43,6 +43,7 @@ public class NPC : MonoBehaviour, IInteractable
         // Load Shop
     }
 
+    // Bound to delegate so cannot spam the begin conversation function
     void SetInteractingFalse()
     {
         bIsInteracting = false;

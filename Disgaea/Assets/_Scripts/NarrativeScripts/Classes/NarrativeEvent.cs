@@ -7,10 +7,9 @@ public class NarrativeEvent// : MonoBehaviour
     // MUST MATCH JSON - see DataTest.json
     public List<Dialogue> dialogues;
 
-    // Some way to create an empty slot?
-    //public Dialogue emptyDialogue;
 }
 
+// Data that must match JSON data
 public struct Dialogue
 {
     public CharacterType characterType;
@@ -18,17 +17,9 @@ public struct Dialogue
     public string atlasImageName;
     public string dialogueText;
     public bool bMultiLines;
-
-    //public Dialogue()
-    //{
-    //    characterType = CharacterType.Empty;
-    //    name = "";
-    //    atlasImageName = "EmptyIcon";
-    //    dialogueText = "";
-    //    bMultiLines = false;
-    //}
 }
 
+// Not sure if we need this atm... but maybe in the future
 public enum CharacterType
 {
     Laharl = 0,

@@ -14,18 +14,18 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (movement)
-        {
-            movement.PlayerMovement();
-        }
+        //if (movement)
+        //{
+        //    movement.PlayerMovement();
+        //}
     }
 
     private void FixedUpdate()
     {
-        //if(movement)
-        //{
-        //    movement.PlayerMovement();
-        //}
+        if (movement)
+        {
+            movement.PlayerMovement();
+        }
     }
 
 
