@@ -8,7 +8,7 @@ public class EditTilesOnGrid : Editor
 {
 
     static Transform m_LevelParent;
-    static bool isSelectedToDrag;
+    public static bool isSelectedToDrag;
     public static Transform LevelParent
     {
         get
@@ -58,7 +58,6 @@ public class EditTilesOnGrid : Editor
         if (Event.current.type == EventType.mouseDown &&
             Event.current.button == 0 &&
             Event.current.alt == false &&
-            Event.current.shift == false &&
             Event.current.control == false)
         {
             if (LevelGridManipulationEditorHandle.IsMouseInValidArea == true)
@@ -81,20 +80,21 @@ public class EditTilesOnGrid : Editor
                     //If the paint tool is selected, create a new block at the current block handle position
                     AdjustHeight(LevelGridManipulationEditorHandle.CurrentHandlePosition);
                     isSelectedToDrag = true;
-                    Debug.Log("Selected = true");
+                    oldMousePosition = Event.current.mousePosition;
+                    //Debug.Log("Selected = true");
                 }
             }
         }
         if (Event.current.type == EventType.mouseUp &&
             Event.current.button == 0 &&
             Event.current.alt == false &&
-            Event.current.shift == false &&
             Event.current.control == false)
         {
             if(LevelGridManipulatorEditorToolBar.SelectedTool == 3)
             {
                 isSelectedToDrag = false;
-                Debug.Log("Selected = false");
+                //Debug.Log("Selected = false");
+                mouseHeight = 0;
             }
         }
 
@@ -103,10 +103,10 @@ public class EditTilesOnGrid : Editor
             if (Event.current.type == EventType.mouseDrag &&
                 Event.current.button == 0 &&
                 Event.current.alt == false &&
-                Event.current.shift == false &&
                 Event.current.control == false)
             {
-                Debug.Log("Is Dragging");
+                DraggingTile(sceneView);
+                //Debug.Log("Is Dragging");
             }
         }
 
@@ -119,24 +119,72 @@ public class EditTilesOnGrid : Editor
 
         //Add our controlId as default control so it is being picked instead of Unitys default SceneView behaviour
         HandleUtility.AddDefaultControl(controlId);
+        //Debug.Log(oldMousePosition == Event.current.mousePosition);
     }
 
     //Create a new basic cube at the given position
     public static void AddBlock(Vector3 position)
     {
-        Debug.Log("I am going to Add Block Fuctionality later.");
+        //Debug.Log("I am going to Add Block Fuctionality later.");
     }
 
     //Remove a gameobject that is close to the given position
     public static void RemoveBlock(Vector3 position)
     {
-        Debug.Log("I am going to Remove Block Fuctionality later.");
+        //Debug.Log("I am going to Remove Block Fuctionality later.");
     }
 
     //Remove a gameobject that is close to the given position
     public static void AdjustHeight(Vector3 position)
     {
-        Debug.Log("I am going to Adjust Height Fuctionality later.");
+        //Debug.Log("I am going to Adjust Height Fuctionality later.");
+    }
+
+    static float heightIncrementStepInSceneDistUnits = 2f;
+    static float mouseHeight = 0f;
+    static Vector2 oldMousePosition = Vector3.zero;
+    public static void DraggingTile(SceneView sceneView)
+    {
+        if (Event.current.mousePosition != oldMousePosition)
+        {
+            //Debug.Log("Im in");
+            if(Event.current.shift == true)
+            {
+                mouseHeight += (Event.current.mousePosition.y - oldMousePosition.y) * -0.2f;
+            }
+            else
+            {
+                mouseHeight += (Event.current.mousePosition.y - oldMousePosition.y) * -1f;
+            }
+
+            //Debug.Log(mouseHeight);
+            while(LevelGridManipulationEditorHandle.currentTile.heightModifier < (Mathf.RoundToInt(Tile.maxWorldTileHeight - 0.5f) * 10) && mouseHeight > heightIncrementStepInSceneDistUnits)
+            {
+                //Debug.Log("I'm in again");
+                mouseHeight -= heightIncrementStepInSceneDistUnits;
+                LevelGridManipulationEditorHandle.currentTile.heightModifier += 1;
+                LevelGridManipulationEditorHandle.currentTile.ApplyChanges();
+            }
+            while (LevelGridManipulationEditorHandle.currentTile.heightModifier > 1 && mouseHeight < -heightIncrementStepInSceneDistUnits)
+            {
+                //Debug.Log("I'm in this again");
+                mouseHeight += heightIncrementStepInSceneDistUnits;
+                LevelGridManipulationEditorHandle.currentTile.heightModifier -= 1;
+                LevelGridManipulationEditorHandle.currentTile.ApplyChanges();
+            }
+            if (mouseHeight > heightIncrementStepInSceneDistUnits)
+                mouseHeight = heightIncrementStepInSceneDistUnits;
+            else if (mouseHeight < -heightIncrementStepInSceneDistUnits)
+                mouseHeight = -heightIncrementStepInSceneDistUnits;
+            oldMousePosition = Event.current.mousePosition;
+        }
+
+        TileDisplay();
+    }
+
+    static void TileDisplay()
+    {
+
     }
 
     //I will use this type of function in many different classes. Basically this is useful to 

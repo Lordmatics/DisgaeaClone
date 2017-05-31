@@ -120,16 +120,31 @@ public class LevelGridManipulatorEditorToolBar : Editor {
         Handles.BeginGUI();
 
         //Here we draw a toolbar at the bottom edge of the SceneView
-        GUILayout.BeginArea(new Rect(0, position.height - 35, 400, 20), EditorStyles.toolbar);
+        GUILayout.BeginArea(new Rect(0, position.height - 35, position.width, 20), EditorStyles.toolbarButton);
         {
             string[] buttonLabels = new string[] { "None", "Erase", "Paint", "Adjust Height" };
+
+            GUILayout.BeginHorizontal();
 
             SelectedTool = GUILayout.SelectionGrid(
                 SelectedTool,
                 buttonLabels,
                 4,
                 EditorStyles.toolbarButton,
-                GUILayout.Width(400));
+                GUILayout.Width(400),
+                GUILayout.Height(20));
+            if(LevelGridManipulationEditorHandle.currentTile != null)
+            {
+                GUILayout.FlexibleSpace(); // just to get the label on the right, and flexible to make it so if i decide to make more buttons on the toolbar, it stays where it needs to.
+                GUILayout.Label("Tile Height: " + LevelGridManipulationEditorHandle.currentTile.heightModifier + ".", GUILayout.Width(100));
+            }
+            else
+            {
+                GUILayout.FlexibleSpace();
+                GUILayout.Label("Tile Height: x", GUILayout.Width(100));
+            }
+
+            GUILayout.EndHorizontal();
         }
         GUILayout.EndArea();
 

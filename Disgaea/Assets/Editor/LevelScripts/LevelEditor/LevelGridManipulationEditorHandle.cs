@@ -8,6 +8,7 @@ public class LevelGridManipulationEditorHandle : Editor {
 
     public static Vector3 CurrentHandlePosition = Vector3.zero;
     public static bool IsMouseInValidArea = false;
+    public static Tile currentTile;
 
     static Vector3 m_OldHandlePosition = Vector3.zero;
     static float objectTransformHeight = 1f;
@@ -28,15 +29,6 @@ public class LevelGridManipulationEditorHandle : Editor {
         }
 
         bool isLevelEditorEnabled = EditorPrefs.GetBool("IsLevelEditorEnabled", true);
-
-        //Ignore this. I am using this because when the scene GameE06 is opened we haven't yet defined any On/Off buttons
-        //for the cube handles. That comes later in E07. This way we are forcing the cube handles state to On in this scene
-        {
-            if (UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().name == "GameE06")
-            {
-                isLevelEditorEnabled = true;
-            }
-        }
 
         if (isLevelEditorEnabled == false)
         {
@@ -71,7 +63,7 @@ public class LevelGridManipulationEditorHandle : Editor {
 
     static void UpdateHandlePosition()
     {
-        if (Event.current == null)
+        if (Event.current == null) // if the player is adjusting the height of a tile, don't update handle position
         {
             return;
         }
@@ -98,11 +90,19 @@ public class LevelGridManipulationEditorHandle : Editor {
             //CurrentHandlePosition.x = Mathf.Floor(hit.point.x - hit.normal.x * 0.001f + offset.x);
             //CurrentHandlePosition.y = Mathf.Floor(hit.point.y - hit.normal.y * 0.001f + offset.y);
             //CurrentHandlePosition.z = Mathf.Floor(hit.point.z - hit.normal.z * 0.001f + offset.z);
+            if(EditTilesOnGrid.isSelectedToDrag == false) // if the player is adjusting the height of a tile, Only Update the Y pos, else adjust x and z.
+            {
+                CurrentHandlePosition.x = hit.transform.position.x;
+                CurrentHandlePosition.z = hit.transform.position.z;
+                currentTile = hit.transform.GetComponent<Tile>();
+            }
 
-            CurrentHandlePosition.x = hit.transform.position.x;
-            CurrentHandlePosition.z = hit.transform.position.z;
 
             //CurrentHandlePosition += new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        else if(EditTilesOnGrid.isSelectedToDrag == false)
+        {
+            currentTile = null;
         }
     }
 
