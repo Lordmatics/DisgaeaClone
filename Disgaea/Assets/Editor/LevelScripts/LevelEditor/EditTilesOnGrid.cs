@@ -3,29 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+// This class handles the functionality and input of the toolbar.
 [InitializeOnLoad]
 public class EditTilesOnGrid : Editor
 {
-
-    static Transform m_LevelParent;
     public static bool isSelectedToDrag;
-    public static Transform LevelParent
-    {
-        get
-        {
-            if (m_LevelParent == null)
-            {
-                GameObject go = GameObject.Find("Level");
-
-                if (go != null)
-                {
-                    m_LevelParent = go.transform;
-                }
-            }
-
-            return m_LevelParent;
-        }
-    }
 
     static EditTilesOnGrid()
     {
@@ -40,12 +22,14 @@ public class EditTilesOnGrid : Editor
 
     static void OnSceneGUI(SceneView sceneView)
     {
+        // if in the correct scene continue, if not, then return void.
         if (IsInCorrectLevel() == false)
         {
             return;
         }
 
-        if (LevelGridManipulatorEditorToolBar.SelectedTool == 0)
+        // if the selected tool == 0 (none), then return void.
+        if (LevelGridManipulatorEditorToolBar.SelectedTool == 0)  
         {
             return;
         }
@@ -54,41 +38,33 @@ public class EditTilesOnGrid : Editor
         //FocusType.Passive means this control cannot receive keyboard input since we are only interested in mouse input
         int controlId = GUIUtility.GetControlID(FocusType.Passive);
 
-        //If the left mouse is being clicked and no modifier buttons are being held
-        if (Event.current.type == EventType.mouseDown &&
-            Event.current.button == 0 &&
-            Event.current.alt == false &&
-            Event.current.control == false)
+        //If the left mouse is being clicked and no modifier buttons are being held except shift 
+        if (Event.current.type == EventType.mouseDown && Event.current.button == 0 && Event.current.alt == false && Event.current.control == false)
         {
-            if (LevelGridManipulationEditorHandle.IsMouseInValidArea == true)
+            if (LevelGridManipulationEditorHandle.IsMouseInValidArea == true) // if mouse ins't over the toolbar.
             {
-                if (LevelGridManipulatorEditorToolBar.SelectedTool == 1)
+                if (LevelGridManipulatorEditorToolBar.SelectedTool == 1) // Run Functionality for "Remove Block".
                 {
                     //If there eraser tool is selected, erase the block at the current block handle position
                     RemoveBlock(LevelGridManipulationEditorHandle.CurrentHandlePosition);
                 }
 
-                if (LevelGridManipulatorEditorToolBar.SelectedTool == 2)
+                if (LevelGridManipulatorEditorToolBar.SelectedTool == 2) // Run Functionality for "Add Block".
                 {
                     //If the paint tool is selected, create a new block at the current block handle position
                     AddBlock(LevelGridManipulationEditorHandle.CurrentHandlePosition);
                 }
 
-
-                if (LevelGridManipulatorEditorToolBar.SelectedTool == 3)
+                if (LevelGridManipulatorEditorToolBar.SelectedTool == 3) // run Functionality for "Adjust Height".
                 {
                     //If the paint tool is selected, create a new block at the current block handle position
                     AdjustHeight(LevelGridManipulationEditorHandle.CurrentHandlePosition);
-                    isSelectedToDrag = true;
-                    oldMousePosition = Event.current.mousePosition;
                     //Debug.Log("Selected = true");
+
                 }
             }
         }
-        if (Event.current.type == EventType.mouseUp &&
-            Event.current.button == 0 &&
-            Event.current.alt == false &&
-            Event.current.control == false)
+        if (Event.current.type == EventType.mouseUp && Event.current.button == 0 && Event.current.alt == false && Event.current.control == false)
         {
             if(LevelGridManipulatorEditorToolBar.SelectedTool == 3)
             {
@@ -138,6 +114,8 @@ public class EditTilesOnGrid : Editor
     public static void AdjustHeight(Vector3 position)
     {
         //Debug.Log("I am going to Adjust Height Fuctionality later.");
+        isSelectedToDrag = true;
+        oldMousePosition = Event.current.mousePosition;
     }
 
     static float heightIncrementStepInSceneDistUnits = 2f;

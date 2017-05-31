@@ -9,6 +9,7 @@ public class LevelGridManipulatorEditorToolBar : Editor {
     //0 - No tool selected
     //1 - The block eraser tool is selected
     //2 - The "Add block" tool is selected
+    //3 - the "Adjust Height" tool is selected
     public static int SelectedTool
     {
         get
