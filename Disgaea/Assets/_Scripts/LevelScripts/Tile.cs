@@ -5,6 +5,7 @@ using UnityEngine;
 [AddComponentMenu("Scripts/LevelScripts/Tile")]
 public class Tile : MonoBehaviour
 {
+    public bool currentlySelected;
     public void SetTile(int height)
     {
         heightModifier = height;
@@ -23,6 +24,8 @@ public class Tile : MonoBehaviour
     [HideInInspector]
     public int tileHeight;
     int modifier;
+
+    public object EditTilesOnGrid { get; private set; }
 
     // My algorithm
     // 1 - 0
@@ -50,5 +53,24 @@ public class Tile : MonoBehaviour
     public Vector3 GetHeightVector()
     {
         return new Vector3(transform.position.x, (0.1f * modifier) - 0.5f, transform.position.z);
+    }
+
+    public void Select()
+    {
+        currentlySelected = true;
+    }
+
+    public void DeSelect()
+    {
+        currentlySelected = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(currentlySelected)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawWireCube(transform.position + Vector3.up * 0.7f, new Vector3(0.8f, 0.2f, 0.8f));
+        }
     }
 }
